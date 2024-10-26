@@ -1,0 +1,251 @@
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    background-image: url('../icons/appstatbg.png'); /* Set appbg.php as background */
+    background-size: cover; /* Ensure the background covers the entire page */
+    background-repeat: no-repeat; /* Prevent repeating the background */
+    background-position: center; /* Center the background image */
+  }
+  
+  
+  .container {
+    padding: 0 15px; /* adjust this value as needed */
+  }
+  
+  .bg-green {
+      background-color: green;
+  }
+  .navbar-green .navbar-brand, .navbar-green .nav-link {
+      color: white;
+  }
+  .user-dropdown {
+      margin-left: 150px;
+  }
+  .dropdown-menu {
+      margin-top: 0;
+  }
+  #userDropdown .dropdown-menu {
+      left: auto !important;
+      right: 0 !important;
+  }
+  .box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 1px;
+    border-radius: 5px;
+    width: 60%;
+    margin-left: 20%;
+  }
+  th:first-child, td:first-child {
+   width: 10%; /* Change the width property here */
+  }
+  
+  th:nth-child(2), td:nth-child(2) {
+   width: 10%; /* Change the width property here */
+  }
+  .btn-primary{
+    float: right;
+  }
+  .btn-secondary{
+    float: right;
+  }
+  .s-header {
+    color: rgb(0, 0, 0);
+    font-size: 36px;
+    margin-top: 30px;
+  }
+  
+  
+  /*APPROVAL STATUS*/
+  /* Wrapper styles for centering */
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    height: 100%;
+    background-image: url('../img/appstatbg.png'); /* Set appbg.php as background */
+    background-size: cover; /* Ensure the background covers the entire page */
+    background-repeat: no-repeat; /* Prevent repeating the background */
+    background-position: center; /* Center the background image */
+  }
+  
+  
+  .container {
+    padding: 0 15px; /* adjust this value as needed */
+  }
+  
+  .bg-green {
+      background-color: green;
+  }
+  .navbar-green .navbar-brand, .navbar-green .nav-link {
+      color: white;
+  }
+  .user-dropdown {
+      margin-left: 150px;
+  }
+  .dropdown-menu {
+      margin-top: 0;
+  }
+  #userDropdown .dropdown-menu {
+      left: auto !important;
+      right: 0 !important;
+  }
+  .box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 1px;
+    border-radius: 5px;
+    width: 60%;
+    margin-left: 20%;
+  }
+  th:first-child, td:first-child {
+   width: 10%; /* Change the width property here */
+  }
+  
+  th:nth-child(2), td:nth-child(2) {
+   width: 10%; /* Change the width property here */
+  }
+  .btn-primary{
+    float: right;
+  }
+  .btn-secondary{
+    float: right;
+  }
+  .s-header {
+    color: rgb(0, 0, 0);
+    font-size: 36px;
+    margin-top: 30px;
+  }
+  
+  
+  /*APPROVAL STATUS*/
+  /* Wrapper styles for centering */
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    height: 100%;
+    background-image: url('../img/appstatbg.png'); /* Set appbg.php as background */
+    background-size: cover; /* Ensure the background covers the entire page */
+    background-repeat: no-repeat; /* Prevent repeating the background */
+    background-position: center; /* Center the background image */
+  }
+  
+  
+  .container {
+    padding: 0 15px; /* adjust this value as needed */
+  }
+  
+  .bg-green {
+      background-color: green;
+  }
+  .navbar-green .navbar-brand, .navbar-green .nav-link {
+      color: white;
+  }
+  .user-dropdown {
+      margin-left: 150px;
+  }
+  .dropdown-menu {
+      margin-top: 0;
+  }
+  #userDropdown .dropdown-menu {
+      left: auto !important;
+      right: 0 !important;
+  }
+  .box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 1px;
+    border-radius: 5px;
+    width: 60%;
+    margin-left: 20%;
+  }
+  th:first-child, td:first-child {
+   width: 10%; /* Change the width property here */
+  }
+  
+  th:nth-child(2), td:nth-child(2) {
+   width: 10%; /* Change the width property here */
+  }
+  .btn-primary{
+    float: right;
+  }
+  .btn-secondary{
+    float: right;
+  }
+  .s-header {
+    color: rgb(0, 0, 0);
+    font-size: 36px;
+    margin-top: 30px;
+  }
+  
+  
+  /*APPROVAL STATUS*/
+  /* Wrapper styles for centering */
+  .wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100svh; /* Full height to center the container-box vertically */
+    box-sizing: border-box; /* Ensure padding is included in width */
+    overflow-x: hidden; /* Ensure no horizontal overflow */
+    margin-top: -40px;
+  }
+  
+  /* Container for the boxes */
+  .container-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%; /* Width of both boxes */
+    max-width: 100%; /* Prevent exceeding viewport width */
+    box-sizing: border-box; 
+  }
+  
+  /* Top box styles */
+  .top-box {
+    background-color: white;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  
+  .top-box-img {
+    max-width: 100%; /* Makes the image responsive */
+    height: auto;
+  }
+  
+  .top-box-boldmessage {
+    font-size: 37px;
+    font-weight: bold;
+    margin-top: 5px;
+    color: #015621;
+  }
+  .top-box-message {
+    font-size: 18px;
+    margin-top: 5px;
+    margin-bottom: 50px;
+    color: #015621;
+    padding-left: 150px;
+    padding-right: 150px;
+    box-sizing: border-box; /* Include padding in the width */
+  }
+  
+  /* Bottom box styles */
+  .bottom-box {
+    background-color: green;
+    width: 100%;
+    height: 50px; /* Fixed height for the green bottom box */
+    margin-top: 0; /* No space between the boxes */
+    box-sizing: border-box;
+  }
+  
+  
+  

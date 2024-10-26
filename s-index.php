@@ -75,39 +75,11 @@ include('connection/dbconfig.php'); // Include your database connection file
         </div>
     </nav>
 
-  <div class="card" style="width: 23rem; height: 30%; position: absolute; margin-left: 5%; margin-top: 6%; border: 0.5px solid #ccc !important;">
-    <div class="card-body shadow">
-      <h5 class="card-title">What would you like to learn?</h5>
-      <div class="mb-3">
-          <select name="subjectExpertise[]" required class="form-select" multiple required placeholder = "Ex: Programming">
-          <option value="" disabled>Select Subject Expertise</option>
-              <?php include ('php/t-subj.php');?>
-          </select>
-      </div>
-
-      <h5 class="card-title">Lesson Location</h5>
-      <div class="container">
-            <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="inSchoolCheckbox" name="inSchoolCheckbox">
-                    <label class="form-check-label" for="inSchoolCheckbox">In School</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="onlineCheckbox" name="onlineCheckbox">
-                    <label class="form-check-label" for="onlineCheckbox">Online</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    
-
-  </div>
 
 
 
   <!-- Content area to display tutor data -->
-  <div class="container mt-3" style = "margin-top:2.3% !important; margin-right: 10%;">
+  <div class="container mt-3" style = "align-contents:center;">
   <h1 class = "s-header">Find tutors for private lessons.</h1>
     <div class="row justify-content-center">
       <?php  include('php/tutorselection.php'); ?>
@@ -119,17 +91,7 @@ include('connection/dbconfig.php'); // Include your database connection file
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.form-select').select2();
-        });
-    </script>
-
-
+  
     
 </body>
 </html>

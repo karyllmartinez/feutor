@@ -39,6 +39,7 @@ include('php/ad-auth.php');
                 <th>Degree Program / Level of Highschool</th>
                 <th>Year</th>
                 <th>Google Drive Link</th>
+                <th>Subject Expertise</th>
                 <th>Action</th>
                 
             </tr>

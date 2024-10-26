@@ -336,7 +336,7 @@ if ($result) {
     // Loop through the result set and display the data
     while ($row = mysqli_fetch_assoc($result)) {
         $sessionID = $row['sessionID'];
-        echo "<div class='col-md-12 mb-3' style = 'margin-left:120px; width:100% !important;'>";
+        echo "<div class='col-md-12 mb-3' style = 'margin-left:0px; width:100% !important;'>";
         echo "<div class='card shadow custom-card' style='height: 200px; margin-top: 1%;'>";
         echo "<div class='card-body'>";
         // Display tutor information

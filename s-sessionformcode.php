@@ -59,7 +59,7 @@ if ($stmt->execute()) {
  else {
     // Error in adding session
     echo "<script>
-            alert('Error in requesting session. Please try again.');
+            alert('Schedule the date and time base on tutor's availability.');
             window.history.back(); // Return to the previous form with the data retained
           </script>";
     exit();
