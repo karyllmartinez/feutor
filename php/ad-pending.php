@@ -36,14 +36,26 @@ $result = mysqli_query($conn, $query);
 ?>
 
 <table class="table">
-  
-    <tbody>
+        <thead>
+            <tr>
+                <th style="width: 10%;">Tutor ID</th>
+                <th style="width: 15%;">First Name</th>
+                <th style="width: 15%;">Last Name</th>
+                <th style="width: 20%;">Email</th>
+                <th style="width: 15%;">Degree Program</th>
+                <th style="width: 5%;">Year</th>
+                <th style="width: 10%;">G-Drive Link</th>
+                <th style="width: 15%;">Subject Expertise</th>
+                <th style="width: 10%;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
         <?php
         // Check if there are any pending tutors
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 ?>
-                <tr>
+             <tr>
                     <td><?php echo $row['tutorID']; ?></td>
                     <td><?php echo $row['firstName']; ?></td>
                     <td><?php echo $row['lastName']; ?></td>
@@ -52,20 +64,22 @@ $result = mysqli_query($conn, $query);
                     <td><?php echo $row['year']; ?></td>
                     <td><?php echo $row['gdriveLink']; ?></td>
                     <td>
-                        <form method="POST">
+                        <form method="POST" style="display: inline;">
                             <input type="hidden" name="tutorID" value="<?php echo $row['tutorID']; ?>">
                             <div class="mb-3">
-                                <label>Subject Expertise</label>
-                                <select name="subjectExpertise[]" required class="form-select" multiple>
+                            <select name="subjectExpertise[]" required class="form-select" multiple style="min-width: 150px; resize: both;">
                                     <option value="" disabled>Select Subject Expertise</option>
                                     <?php include('php/t-subj.php'); ?>
                                 </select>
                             </div>
+                    </td>
+                    <td>
                             <button type="submit" class="btn btn-success" name="approve_btn">Approve</button>
                             <button type="submit" class="btn btn-danger" name="decline_btn">Decline</button>
                         </form>
                     </td>
                 </tr>
+
                 <?php
             }
         } else {

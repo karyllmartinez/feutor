@@ -17,22 +17,29 @@ include('php/ad-auth.php');
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="ad-index.php">Admin Dashboard</a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="tutormanagement.php">Tutor Management</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <a class="navbar-brand" href="ad-index.php">Admin Dashboard</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="tutorearnings.php">Tutor Earnings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="tutormanagement.php">Tutor Management</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="subjectmanagement.php">Subject Management</a>
+            </li>
+        </ul>
+    </div>
+    <a href="ad-logout.php">Logout</a>
+</nav>
 
 <div class="container mt-3">
     <h2>Approved Student Tutors</h2>
     <table class="table">
         <thead>
             <tr>
-                <th>Tutor ID</th>
+                <th></th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
