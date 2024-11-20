@@ -259,7 +259,8 @@ echo "<style type='text/css'>
     margin-right: 10px; /* Adjust the right margin as needed */
     border-radius: 50px;
     }
-/* Adjust the width of the button containers as per your design */
+    
+    /* Adjust the width of the button containers as per your design */
     .button-container1 {
     width: 300px;
     }
@@ -341,7 +342,7 @@ if ($result) {
         echo "<div class='card-body'>";
         // Display tutor information
         echo "<h4 class='tutorName'>" . $row['studentFullName']  ."</h4>";
-        echo "<p class='card-text'><img src='icons/default.jpeg' alt='Profile Picture' class='profile-picture'></p>";
+        echo "<p class='card-text'><img src='icons/default.png' alt='Profile Picture' class='profile-picture'></p>";
         echo "<p class='degreeProgram'>" . "<img src = 'icons/grad.png' class = 'icongrad'/>" . $row["degreeProgram"] . " - " . $row['year'] ."</p>";
         echo "<p class='mode'>" . "<img src = 'icons/mode.png' class = 'iconmode'/>"  . $row['teachingMode'] . "  ". "<strong>|</strong>" . "  ". $row["formattedSessionDate"] .  "  ". "<strong>|</strong>" . "  " .   $row["formattedStartTime"] ." - ".   $row["formattedEndTime"] ."</p>";
         echo "<p class='subj'> " . "<img src = 'icons/subj.png' class = 'iconsubj'/>"  . $row['subject'] . "</p>";

@@ -122,48 +122,72 @@ echo "<style type='text/css'>
 }
 
 </style>";
-// SQL query to fetch data from the tutor table where approvalStatus is 'Approved'
-$sql = "SELECT tutorID, firstName, lastName, degreeProgram, year, profilePicture, subjectExpertise, teachingMode, ratePerHour, bio 
-FROM tutor 
-WHERE approvalStatus = 'Approved' AND subjectExpertise IS NOT NULL AND teachingMode IS NOT NULL AND ratePerHour IS NOT NULL AND bio IS NOT NULL";
 
+// Get search query and day filter from GET request
+$searchQuery = isset($_GET['subjectSearch']) ? $_GET['subjectSearch'] : '';
+$dayOfWeek = isset($_GET['dayOfWeek']) ? $_GET['dayOfWeek'] : '';
+
+// Base SQL query with JOIN
+$sql = "
+    SELECT 
+        t.tutorID, t.firstName, t.lastName, t.degreeProgram, t.year, t.profilePicture, 
+        t.subjectExpertise, t.teachingMode, t.ratePerHour, t.bio, a.day_of_week, a.start_time, a.end_time
+    FROM tutor AS t
+    INNER JOIN tutorAvailability AS a ON t.tutorID = a.tutor_id
+    WHERE t.approvalStatus = 'Approved' 
+        AND t.subjectExpertise IS NOT NULL 
+        AND t.teachingMode IS NOT NULL 
+        AND t.ratePerHour IS NOT NULL 
+        AND t.bio IS NOT NULL
+";
+
+// Apply subject search filter
+if (!empty($searchQuery)) {
+    $sql .= " AND t.subjectExpertise LIKE '%" . mysqli_real_escape_string($conn, $searchQuery) . "%'";
+}
+
+// Apply day filter
+if (!empty($dayOfWeek)) {
+    $sql .= " AND a.day_of_week = '" . mysqli_real_escape_string($conn, $dayOfWeek) . "'";
+}
+
+
+// Group by tutorID to ensure each tutor is listed once
+$sql .= " GROUP BY t.tutorID";
+
+
+// Execute the query
 $result = mysqli_query($conn, $sql);
 
-// Check if the query was successful
+// Display tutors matching the filters
 if ($result) {
-  // Loop through the result set and display the data
-  while ($row = mysqli_fetch_assoc($result)) {
-
-    echo "<div class='col-md-12 mb-3' style = 'margin-left: 10px; width:100% !important;'>";
-    echo "<div class='card shadow custom-card' style='height: 200px; margin-top: 1%;'>";
-    echo "<div class='card-body'>";
-    // Display tutor information
-    echo "<h4 class='tutorName'>" . $row['firstName'] . " " . $row['lastName']  ."</h4>";
-    echo "<p class='degreeProgram'>" . "<img src = 'icons/grad.png' class = 'icongrad'/>" . $row['degreeProgram'] . " - " . $row['year'] ."</p>";
-    echo "<p class='card-text'><img src='" . $row['profilePicture'] . "' alt='Profile Picture' class='profile-picture'></p>";
-    echo "<p class='mode'>" . "<img src = 'icons/mode.png' class = 'iconmode'/>"  . $row['teachingMode'] . "</p>";
-    echo "<p class='subj'> " . "<img src = 'icons/subj.png' class = 'iconsubj'/>"  . $row['subjectExpertise'] . "</p>";
-    echo "<p class='bio'>" . substr($row['bio'], 0, 155) . (strlen($row['bio']) > 75 ? '...' : '') . "</p>";
-    echo "<p class='rate'> ₱" . $row['ratePerHour'] . "/hr</p>";
-
-    echo "<a href='s-sessionform.php?"  .  "&tutor=" . urlencode($row['firstName'] . " " . $row['lastName']) ."' class='btn btn-outline-success'>Book a Session</a>";
-    // Check if sessionID is set in the URL
-    if (isset($_GET['sessionID'])) {
-      // Get the sessionID from the URL
-      $sessionID = $_GET['sessionID'];
-      echo "<a href='t-sessiondetails.php?sessionID=$sessionID'>
-          <button class='btn btn-outline-success'>View More Details</button>
-      </a>";
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<div class='col-md-12 mb-3' style='margin-left: 10px; width:100% !important;'>";
+            echo "<div class='card shadow custom-card' style='height: 200px; margin-top: 1%;'>";
+            echo "<div class='card-body'>";
+            echo "<h4 class='tutorName'>" . $row['firstName'] . " " . $row['lastName'] . "</h4>";
+            echo "<p class='degreeProgram'><img src='icons/grad.png' class='icongrad'/>" . $row['degreeProgram'] . " - " . $row['year'] . "</p>";
+            echo "<p class='card-text'><img src='" . $row['profilePicture'] . "' alt='Profile Picture' class='profile-picture'></p>";
+            echo "<p class='mode'><img src='icons/mode.png' class='iconmode'/>" . $row['teachingMode'] . "</p>";
+            echo "<p class='subj'><img src='icons/subj.png' class='iconsubj'/>" . $row['subjectExpertise'] . "</p>";
+            echo "<p class='bio'>" . substr($row['bio'], 0, 155) . (strlen($row['bio']) > 75 ? '...' : '') . "</p>";
+            echo "<p class='rate'>₱" . $row['ratePerHour'] . "/hr</p>";
+           // echo "<p>Available on " . $row['day_of_week'] . " from " . $row['start_time'] . " to " . $row['end_time'] . "</p>";
+            echo "<a href='s-sessionform.php?tutor=" . urlencode($row['firstName'] . " " . $row['lastName']) . "' class='btn btn-outline-success'>Book a Session</a>";
+            echo "</div>";
+            echo "</div>";
+            echo "</div>";
+        }
+    } else {
+        echo "<p>No tutors found matching your criteria.</p>";
     }
-
-    echo "</div>";
-    echo "</div>";
-    echo "</div>";
-  }
 } else {
-  echo "Error: " . mysqli_error($conn);
+    echo "Error: " . mysqli_error($conn);
 }
 
 // Close connection
 mysqli_close($conn);
+
+
 ?>

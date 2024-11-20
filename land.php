@@ -66,7 +66,7 @@
     <script>
         function redirect(role) {
             if (role === "student") {
-                window.location.href = "s-registration.php";
+                window.location.href = "s-login.php";
             } else if (role === "student-tutor") {
                 window.location.href = "t-registration.php";
             }
@@ -107,7 +107,7 @@
 
                                         <h2>WELCOME!</h2>
                                         <p style="font-size: 20px; font-weight: bold;">FEUTOR is a tutor booking website
-                                            for FEU Roosevelt students.</p>
+                                            for FEU Roosevelt College students.</p>
                                         <div style="height: 100px;"></div>
                                         <p style="font-size: 20px; font-weight: bold;">SELECT YOUR ROLE:</p>
                                         <div style="height: 70px;"></div>

@@ -19,9 +19,6 @@ $stmt->close();
 // Check if profile picture exists and if not, use a default image
 $profilePicture = !empty($profilePicture) ? $profilePicture : 'icons/default.png';
 
-
-
-
 ?>
 
 

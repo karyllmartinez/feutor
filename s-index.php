@@ -14,13 +14,13 @@ include('connection/dbconfig.php'); // Include your database connection file
 
 <head>
     <title>FEUTOR</title>
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>">
 
 </head>
 
@@ -67,31 +67,53 @@ include('connection/dbconfig.php'); // Include your database connection file
                             <?php echo $user_firstname; ?>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="s-logout.php">Logout</a>
+                            <a class="dropdown-item" href="s-profile.php">Edit Profile</a>
+                            <a class="dropdown-item" href="s-logout.php">Logout</a>
                         </div>
                     </li>
+
                 </ul>
             </div>
         </div>
     </nav>
 
 
-
-
-  <!-- Content area to display tutor data -->
-  <div class="container mt-3" style = "align-contents:center;">
-  <h1 class = "s-header">Find tutors for private lessons.</h1>
-    <div class="row justify-content-center">
-      <?php  include('php/tutorselection.php'); ?>
-    </div>
-  </div>
-
-  <!-- jQuery, Popper.js, and Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  
-  
     
+
+    <!-- Content area to display tutor data -->
+    <div class="container mt-3" style="align-contents:center;">
+
+        <h1 class="s-header">Find tutors for private lessons.</h1>
+
+
+        <form method="GET" action="s-index.php" class="form-inline my-3">
+    <input type="text" name="subjectSearch" class="form-control mr-2" placeholder="Search by Subject">
+    <select name="dayOfWeek" class="form-control mr-2">
+        <option value="">Select Day</option>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+
+        <div class="row justify-content-center">
+            <?php include('php/tutorselection.php'); ?>
+        </div>
+    </div>
+
+    <!-- jQuery, Popper.js, and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+
 </body>
+
 </html>

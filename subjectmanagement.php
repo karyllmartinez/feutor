@@ -27,6 +27,9 @@ include('php/ad-auth.php');
                     <li class="nav-item">
                         <a class="nav-link" href="subjectmanagement.php">Subject Management</a>
                     </li>
+                    <li class="nav-item">
+            <a class="nav-link" href="uploadstudent.php">Add Student</a>
+            </li>
                 </ul>
             </div>
             <a href="ad-logout.php">Logout</a>

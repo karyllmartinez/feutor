@@ -20,6 +20,8 @@ $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
 
+
+
 // Check if the query was successful
 if ($result && $result->num_rows > 0) {
     // Output the data
@@ -55,7 +57,7 @@ if ($result && $result->num_rows > 0) {
       <div class="top-box">
         <img src="icons/appstatD.png" alt="Picture" class="top-box-img">
         <p class="top-box-boldmessage">Registration Status Update</p>
-        <p class="top-box-message">We regret to inform you that, after careful review, we are unable to proceed with your registration due to factors related to the information provided or our eligibility criteria. You are welcome to reapply for the next school year.
+        <p class="top-box-message">We regret to inform you that, after careful review, we are unable to proceed with your registration due to factors related to the information provided or our eligibility criteria. You are welcome to reapply for the next semester.
                                     <br><br>We appreciate your interest and understanding.</p>
       </div>
 
