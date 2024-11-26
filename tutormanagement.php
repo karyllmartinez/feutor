@@ -50,6 +50,7 @@ include('php/ad-auth.php');
                 <th>Year</th>
                 <th>Google Drive Link</th>
                 <th>Subject Expertise</th>
+                <th>Rate Per Hour</th>
                 <th>Action</th>
                 
             </tr>

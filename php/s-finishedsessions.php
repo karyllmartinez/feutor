@@ -175,7 +175,7 @@ $sql = "SELECT s.sessionID, DATE_FORMAT(s.sessionDate, '%M %e, %Y') AS formatted
 
 
 
-$sql2 = "SELECT reviewID, studentID, sessionID, rating, comment, timestamp FROM review";
+$sql2 = "SELECT reviewID, studentID, sessionID, way, communication, knowledge, engagement, time, comment, timestamp FROM review";
 
 
 
@@ -198,7 +198,11 @@ if (isset($_POST['submitReview'])) {
   // Get the form data
   $studentID = $_POST['studentID'];
   $sessionID = $_POST['sessionID'];
-  $rating = $_POST['rating'];
+  $way = $_POST['way'];
+  $communication = $_POST['communication'];
+  $knowledge = $_POST['knowledge'];
+  $engagement = $_POST['engagement'];
+  $time = $_POST['time'];
   $comment = $_POST['comment'];
   $timestamp = date('Y-m-d H:i:s'); // current timestamp
 
@@ -211,8 +215,8 @@ if (isset($_POST['submitReview'])) {
      
   } else {
       // Insert the data into the review table
-      $sql = "INSERT INTO `review` (`studentID`, `sessionID`, `rating`, `comment`, `timestamp`) 
-              VALUES ('$studentID', '$sessionID', '$rating', '$comment', '$timestamp')";
+      $sql = "INSERT INTO `review` (`studentID`, `sessionID`, `way`, `communication`, `knowledge`, `engagement`, `time`, `comment`, `timestamp`) 
+              VALUES ('$studentID', '$sessionID', '$way', '$communication', '$knowledge', '$engagement', '$time', '$comment', '$timestamp')";
 
       if (mysqli_query($conn, $sql)) {
         echo "<script>alert('Review submitted successfully!');</script>";
@@ -236,7 +240,11 @@ if ($result) {
 
         if ($reviewExists) {
             $reviewRow = mysqli_fetch_assoc($reviewCheckResult);
-            $rating = $reviewRow['rating'];
+            $way = $reviewRow['way'];
+            $communication = $reviewRow['communication'];
+            $knowledge = $reviewRow['knowledge'];
+            $engagement = $reviewRow['engagement'];
+            $time = $reviewRow['time'];
             $comment = $reviewRow['comment'];
         }
     
@@ -383,19 +391,92 @@ echo "
             <div class='modal-body'>
                 <form method='post'>
                     <input type='hidden' name='sessionID' value='$sessionID'>
+
+                    <p>Way of Teaching</p>
                     <input type='hidden' name='studentID' value='$studentID'> <!-- Add this line -->
                     <div class='rate'>
-                        <input type='radio' id='star5_$sessionID' name='rating' value='5' />
+                        <input type='radio' id='star5_$sessionID' name='way' value='5' />
                         <label for='star5_$sessionID' class='star'>&#9733;</label>
-                        <input type='radio' id='star4_$sessionID' name='rating' value='4' />
+                        <input type='radio' id='star4_$sessionID' name='way' value='4' />
                         <label for='star4_$sessionID' class='star'>&#9733;</label>
-                        <input type='radio' id='star3_$sessionID' name='rating' value='3' />
+                        <input type='radio' id='star3_$sessionID' name='way' value='3' />
                         <label for='star3_$sessionID' class='star'>&#9733;</label>
-                        <input type='radio' id='star2_$sessionID' name='rating' value='2' />
+                        <input type='radio' id='star2_$sessionID' name='way' value='2' />
                         <label for='star2_$sessionID' class='star'>&#9733;</label>
-                        <input type='radio' id='star1_$sessionID' name='rating' value='1' />
+                        <input type='radio' id='star1_$sessionID' name='way' value='1' />
                         <label for='star1_$sessionID' class='star'>&#9733;</label>
                     </div>
+
+                    <br>
+
+                    <p>Communication Skills</p>
+                    <input type='hidden' name='studentID' value='$studentID'> <!-- Add this line -->
+                    <div class='rate'>
+                        <input type='radio' id='cstar5_$sessionID' name='communication' value='5' />
+                        <label for='cstar5_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='cstar4_$sessionID' name='communication' value='4' />
+                        <label for='cstar4_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='cstar3_$sessionID' name='communication' value='3' />
+                        <label for='cstar3_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='cstar2_$sessionID' name='communication' value='2' />
+                        <label for='cstar2_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='cstar1_$sessionID' name='communication' value='1' />
+                        <label for='cstar1_$sessionID' class='star'>&#9733;</label>
+                    </div>
+
+                     <br>
+
+                    <p>Knowledge & Expertise</p>
+                    <input type='hidden' name='studentID' value='$studentID'> <!-- Add this line -->
+                    <div class='rate'>
+                        <input type='radio' id='kstar5_$sessionID' name='knowledge' value='5' />
+                        <label for='kstar5_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='kstar4_$sessionID' name='knowledge' value='4' />
+                        <label for='kstar4_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='kstar3_$sessionID' name='knowledge' value='3' />
+                        <label for='kstar3_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='kstar2_$sessionID' name='knowledge' value='2' />
+                        <label for='kstar2_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='kstar1_$sessionID' name='knowledge' value='1' />
+                        <label for='kstar1_$sessionID' class='star'>&#9733;</label>
+                    </div>
+
+                     <br>
+
+                    <p>Engagement</p>
+                    <input type='hidden' name='studentID' value='$studentID'> <!-- Add this line -->
+                    <div class='rate'>
+                        <input type='radio' id='estar5_$sessionID' name='engagement' value='5' />
+                        <label for='estar5_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='estar4_$sessionID' name='engagement' value='4' />
+                        <label for='estar4_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='estar3_$sessionID' name='engagement' value='3' />
+                        <label for='estar3_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='estar2_$sessionID' name='engagement' value='2' />
+                        <label for='estar2_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='estar1_$sessionID' name='engagement' value='1' />
+                        <label for='estar1_$sessionID' class='star'>&#9733;</label>
+                    </div>
+
+                     <br>
+
+                    <p>Time Management</p>
+                    <input type='hidden' name='studentID' value='$studentID'> <!-- Add this line -->
+                    <div class='rate'>
+                        <input type='radio' id='tstar5_$sessionID' name='time' value='5' />
+                        <label for='tstar5_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='tstar4_$sessionID' name='time' value='4' />
+                        <label for='tstar4_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='tstar3_$sessionID' name='time' value='3' />
+                        <label for='tstar3_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='tstar2_$sessionID' name='time' value='2' />
+                        <label for='tstar2_$sessionID' class='star'>&#9733;</label>
+                        <input type='radio' id='tstar1_$sessionID' name='time' value='1' />
+                        <label for='tstar1_$sessionID' class='star'>&#9733;</label>
+                    </div>
+
+                     <br>
+
                     <textarea name='comment' placeholder='Leave a comment...' class='form-control' rows='3'></textarea>
                     <div class='modal-footer'>
                         <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
@@ -437,7 +518,7 @@ echo "
                 </tr>
                 <tr>
                   <td>
-                    <p style='font-weight: bold; font-size: 20px; display: flex; justify-content: start; margin:0; color: #0F422A'>Rating:</p>
+                    <p style='font-weight: bold; font-size: 10px; display: flex; justify-content: start; margin:0; color: #0F422A'>Way of Teaching:</p>
                   </td>
                 </tr>
                 
@@ -448,9 +529,67 @@ echo "
                     // Display stars based on the rating value
                     $totalStars = 5; // Total number of stars
                     for ($i = 1; $i <= $totalStars; $i++) {
-                        if ($i <= $rating) {
+                        if ($i <= $way) {
                             echo "<span class='star filled'>★</span>"; // Filled star
-                        } else {
+                        } 
+                        
+                        else {
+                            echo "<span class='star'>★</span>"; // Empty star
+                        }
+                    }
+
+
+                  echo"
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <p style='font-weight: bold; font-size: 10px; display: flex; justify-content: start; margin:0; color: #0F422A'>Communication Skills:</p>
+                  </td>
+                </tr>
+                
+
+                <tr>
+                  <td>";
+
+                    // Display stars based on the rating value
+                    $totalStars = 5; // Total number of stars
+                    for ($i = 1; $i <= $totalStars; $i++) {
+                        if ($i <= $communication) {
+                            echo "<span class='star filled'>★</span>"; // Filled star
+                        } 
+                        
+                        else {
+                            echo "<span class='star'>★</span>"; // Empty star
+                        }
+                    }
+
+
+                  echo"
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <p style='font-weight: bold; font-size: 10px; display: flex; justify-content: start; margin:0; color: #0F422A'>Knowledge and Skills:</p>
+                  </td>
+                </tr>
+                
+
+                <tr>
+                  <td>";
+
+                    // Display stars based on the rating value
+                    $totalStars = 5; // Total number of stars
+                    for ($i = 1; $i <= $totalStars; $i++) {
+                        if ($i <= $knowledge) {
+                            echo "<span class='star filled'>★</span>"; // Filled star
+                        } 
+                        
+                        else {
                             echo "<span class='star'>★</span>"; // Empty star
                         }
                     }
@@ -462,19 +601,71 @@ echo "
                 </tr>
 
 
-
-                
                 <tr>
                   <td>
-                    <p style='font-weight: bold; font-size: 20px; display: flex; justify-content: start; margin:0; color: #0F422A'>Comment:</p>
+                    <p style='font-weight: bold; font-size: 10px; display: flex; justify-content: start; margin:0; color: #0F422A'>Engagement:</p>
+                  </td>
+                </tr>
+                
+
+                <tr>
+                  <td>";
+
+                    // Display stars based on the rating value
+                    $totalStars = 5; // Total number of stars
+                    for ($i = 1; $i <= $totalStars; $i++) {
+                        if ($i <= $engagement) {
+                            echo "<span class='star filled'>★</span>"; // Filled star
+                        } 
+                        
+                        else {
+                            echo "<span class='star'>★</span>"; // Empty star
+                        }
+                    }
+
+
+                  echo"
+
                   </td>
                 </tr>
 
                 <tr>
                   <td>
-                    <p style='font-size: 15px; display: flex; justify-content: start; color: #0F422A; text-align: justify;'> ". htmlspecialchars($comment) . "</p>
+                    <p style='font-weight: bold; font-size: 10px; display: flex; justify-content: start; margin:0; color: #0F422A'>Time Management:</p>
+                  </td>
+                </tr>
+                
 
-                   
+                <tr>
+                  <td>";
+
+                    // Display stars based on the rating value
+                    $totalStars = 5; // Total number of stars
+                    for ($i = 1; $i <= $totalStars; $i++) {
+                        if ($i <= $time) {
+                            echo "<span class='star filled'>★</span>"; // Filled star
+                        } 
+                        
+                        else {
+                            echo "<span class='star'>★</span>"; // Empty star
+                        }
+                    }
+
+
+                  echo"
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin:0; color: #0F422A'>Comment:</p>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <p style='font-size: 10px; display: flex; justify-content: start; color: #0F422A; text-align: justify;'> ". htmlspecialchars($comment) . "</p>                   
                   </td>
                 </tr>
 

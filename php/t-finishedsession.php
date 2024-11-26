@@ -223,7 +223,11 @@ if ($result) {
  
          if ($reviewExists) {
              $reviewRow = mysqli_fetch_assoc($reviewCheckResult);
-             $rating = $reviewRow['rating'];
+             $way = $reviewRow['way'];
+            $communication = $reviewRow['communication'];
+            $knowledge = $reviewRow['knowledge'];
+            $engagement = $reviewRow['engagement'];
+            $time = $reviewRow['time'];
              $comment = $reviewRow['comment'];
          }
     
@@ -282,7 +286,7 @@ if ($result) {
                 </tr>
                 <tr>
                   <td>
-                    <p style='font-weight: bold; font-size: 20px; display: flex; justify-content: start; margin:0; color: #0F422A'>Rating:</p>
+                    <p style='font-weight: bold; font-size: 10px; display: flex; justify-content: start; margin:0; color: #0F422A'>Way of Teaching:</p>
                   </td>
                 </tr>
                 
@@ -293,9 +297,11 @@ if ($result) {
                     // Display stars based on the rating value
                     $totalStars = 5; // Total number of stars
                     for ($i = 1; $i <= $totalStars; $i++) {
-                        if ($i <= $rating) {
+                        if ($i <= $way) {
                             echo "<span class='star filled'>★</span>"; // Filled star
-                        } else {
+                        } 
+                        
+                        else {
                             echo "<span class='star'>★</span>"; // Empty star
                         }
                     }
@@ -306,6 +312,118 @@ if ($result) {
                   </td>
                 </tr>
 
+                <tr>
+                  <td>
+                    <p style='font-weight: bold; font-size: 10px; display: flex; justify-content: start; margin:0; color: #0F422A'>Communication Skills:</p>
+                  </td>
+                </tr>
+                
+
+                <tr>
+                  <td>";
+
+                    // Display stars based on the rating value
+                    $totalStars = 5; // Total number of stars
+                    for ($i = 1; $i <= $totalStars; $i++) {
+                        if ($i <= $communication) {
+                            echo "<span class='star filled'>★</span>"; // Filled star
+                        } 
+                        
+                        else {
+                            echo "<span class='star'>★</span>"; // Empty star
+                        }
+                    }
+
+
+                  echo"
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <p style='font-weight: bold; font-size: 10px; display: flex; justify-content: start; margin:0; color: #0F422A'>Knowledge and Skills:</p>
+                  </td>
+                </tr>
+                
+
+                <tr>
+                  <td>";
+
+                    // Display stars based on the rating value
+                    $totalStars = 5; // Total number of stars
+                    for ($i = 1; $i <= $totalStars; $i++) {
+                        if ($i <= $knowledge) {
+                            echo "<span class='star filled'>★</span>"; // Filled star
+                        } 
+                        
+                        else {
+                            echo "<span class='star'>★</span>"; // Empty star
+                        }
+                    }
+
+
+                  echo"
+
+                  </td>
+                </tr>
+
+
+                <tr>
+                  <td>
+                    <p style='font-weight: bold; font-size: 10px; display: flex; justify-content: start; margin:0; color: #0F422A'>Engagement:</p>
+                  </td>
+                </tr>
+                
+
+                <tr>
+                  <td>";
+
+                    // Display stars based on the rating value
+                    $totalStars = 5; // Total number of stars
+                    for ($i = 1; $i <= $totalStars; $i++) {
+                        if ($i <= $engagement) {
+                            echo "<span class='star filled'>★</span>"; // Filled star
+                        } 
+                        
+                        else {
+                            echo "<span class='star'>★</span>"; // Empty star
+                        }
+                    }
+
+
+                  echo"
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <p style='font-weight: bold; font-size: 10px; display: flex; justify-content: start; margin:0; color: #0F422A'>Time Management:</p>
+                  </td>
+                </tr>
+                
+
+                <tr>
+                  <td>";
+
+                    // Display stars based on the rating value
+                    $totalStars = 5; // Total number of stars
+                    for ($i = 1; $i <= $totalStars; $i++) {
+                        if ($i <= $time) {
+                            echo "<span class='star filled'>★</span>"; // Filled star
+                        } 
+                        
+                        else {
+                            echo "<span class='star'>★</span>"; // Empty star
+                        }
+                    }
+
+
+                  echo"
+
+                  </td>
+                </tr>
 
 
                 

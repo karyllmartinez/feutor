@@ -7,9 +7,7 @@ if (isset($_POST['submit'])) {
 
     // Get form data
     $subjectName = $_POST['subjectName'];
-    $category = $_POST['category'];
-    $semester = $_POST['semester'];
-
+   
     // Check if the subject name already exists
     $checkSql = "SELECT * FROM subjects WHERE subject_name = ?";
     $checkStmt = $conn->prepare($checkSql);
@@ -23,9 +21,9 @@ if (isset($_POST['submit'])) {
     } else {
         // Subject name is unique, proceed with insertion
         // SQL query to insert subject into database
-        $insertSql = "INSERT INTO subjects (subject_name, category, semester) VALUES (?, ?, ?)";
+        $insertSql = "INSERT INTO subjects (subject_name) VALUES (?)";
         $insertStmt = $conn->prepare($insertSql);
-        $insertStmt->bind_param("sss", $subjectName, $category, $semester);
+        $insertStmt->bind_param("s", $subjectName);
 
         // Execute the insertion statement
         if ($insertStmt->execute()) {

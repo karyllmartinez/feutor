@@ -50,6 +50,7 @@ while ($row = mysqli_fetch_assoc($approved_result)) {
     echo "<td>" . $row['year'] . "</td>";
     echo "<td>" . $row['gdriveLink'] . "</td>";
     echo "<td>" . $row['subjectExpertise'] . "</td>";
+    echo "<td>" . $row['ratePerHour'] . "</td>";
     echo "<td>
             <form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this tutor?\")'>
                 <input type='hidden' name='tutorID' value='" . $row['tutorID'] . "'>

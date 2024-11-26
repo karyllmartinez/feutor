@@ -37,7 +37,7 @@ if ($result && $result->num_rows > 0) {
       <div class="top-box">
         <img src="icons/appstatA.png" alt="Picture" class="top-box-img">
         <p class="top-box-boldmessage">Thank you for joining <br> FEUTOR!</p>
-        <p class="top-box-message">Your account is under review. We are processing your registration, and you can expect to be notified within the next 1-2 days once your account has been activated. Thank you for your patience!</p>
+        <p class="top-box-message">Your account is under review. We are processing your registration, and you can expect to be notified within the next 2 days once your account has been activated. Thank you for your patience!</p>
       </div>
 
       <!-- Bottom box with green background -->

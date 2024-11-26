@@ -34,13 +34,12 @@ echo '</form>';
 // Display subjects in a table
 if ($result->num_rows > 0) {
     echo '<table class="table">';
-    echo '<thead><tr><th>Subject Name</th><th>Category</th><th>Semester</th><th>Action</th></tr></thead>';
+    echo '<thead><tr><th>Subject Name</th><th>Action</th></tr></thead>';
     echo '<tbody>';
     while ($row = $result->fetch_assoc()) {
         echo '<tr>';
         echo '<td>' . $row['subject_name'] . '</td>';
-        echo '<td>' . $row['category'] . '</td>';
-        echo '<td>' . $row['semester'] . '</td>';
+    
         echo '<td>';
         // Form for deleting subject
         echo '<form action="deletesubject.php" method="POST">';

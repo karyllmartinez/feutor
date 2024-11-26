@@ -61,11 +61,12 @@ if ($availabilityResult->num_rows > 0) {
             height: 100%; /* Full height */
             overflow: auto; /* Enable scroll if needed */
             background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            overflow: hidden; /* Prevent scrolling */
         }
 
     .modal-content {
       background-color: #fefefe;
-      margin: 15% auto;
+      margin: 8% auto;
       /* 15% from the top and centered */
       padding: 20px;
       border: 1px solid #888;
@@ -76,6 +77,7 @@ if ($availabilityResult->num_rows > 0) {
       border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
+
 
     .close {
       color: #aaa;
@@ -250,22 +252,42 @@ if ($availabilityResult->num_rows > 0) {
         <a href="#" onclick="document.getElementById('editModal').style.display='block';"
           style="text-decoration: none; background-color: #007bff; color: white; padding: 10px 15px; border-radius: 5px; display: block; margin-bottom: 5px; text-align: center;">Edit
           Profile</a>
-          <a href="#" onclick="document.getElementById('availabilityModal').style.display='block';" style="text-decoration: none; background-color: #28a745; color: white; padding: 10px 15px; border-radius: 5px; display: block;">Set Available Days and Time</a>
+          <a href="#" onclick="document.getElementById('availabilityModal').style.display='block';"
+   style="text-decoration: none; background-color: #28a745; color: white; padding: 10px 15px; border-radius: 5px; display: block;">
+   Set Availablility
+</a>
       </div>
     </div>
 
     <div style="margin-top: 20px;">
-      <h2 style="color: #555;">About</h2>
-      <p><strong>Email:</strong> <?php echo $tutorData['email']; ?></p>
-      <p><strong>Degree Program:</strong> <?php echo $tutorData['degreeProgram']; ?></p>
-      <p><strong>Year:</strong> <?php echo $tutorData['year']; ?></p>
-      <p><strong>Subject Expertise:</strong> <?php echo $tutorData['subjectExpertise']; ?></p>
-      <p><strong>Teaching Mode:</strong> <?php echo $tutorData['teachingMode']; ?></p>
-      <p><strong>Rate Per Hour:</strong> P<?php echo $tutorData['ratePerHour']; ?></p>
-      <p><strong>Bio:</strong> <?php echo nl2br($tutorData['bio']); ?></p>
-      <p><strong>Account Created On:</strong> <?php echo date('F j, Y', strtotime($tutorData['created_at'])); ?></p>
-    </div>
-  </div>
+    <h2 style="color: #555;">About</h2>
+    <p><strong>Email:</strong> <?php echo $tutorData['email']; ?></p>
+    <p><strong>Degree Program:</strong> <?php echo $tutorData['degreeProgram']; ?></p>
+    <p><strong>Year:</strong> <?php echo $tutorData['year']; ?></p>
+    <p><strong>Subject Expertise:</strong> <?php echo $tutorData['subjectExpertise']; ?></p>
+    <p><strong>Teaching Mode:</strong> <?php echo $tutorData['teachingMode']; ?></p>
+    <p><strong>Rate Per Hour:</strong> P<?php echo $tutorData['ratePerHour']; ?></p>
+    <p><strong>Bio:</strong> <?php echo nl2br($tutorData['bio']); ?></p>
+    <p><strong>Account Created On:</strong> <?php echo date('F j, Y', strtotime($tutorData['created_at'])); ?></p>
+
+    <!-- Display Availability -->
+    <p><strong>Available Days and Times:</strong></p>
+    <ul>
+        <?php
+        if (!empty($availabilityData)) {
+            foreach ($availabilityData as $availability) {
+                // Convert times to 12-hour format
+                $startTime = date("g:i A", strtotime($availability['start_time']));
+                $endTime = date("g:i A", strtotime($availability['end_time']));
+                echo "<li>{$availability['day_of_week']}: $startTime - $endTime</li>";
+            }
+        } else {
+            echo "<li>No availability set.</li>";
+        }
+        ?>
+    </ul>
+</div>
+
 
 
 
@@ -308,10 +330,11 @@ if ($availabilityResult->num_rows > 0) {
           </select>
         </div>
 
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <label>Rate Per Hour</label>
           <input type="number" name="ratePerHour" required placeholder="Enter Rate Per Hour" class="form-control">
-        </div>
+        </div> -->
+        
         <div class="mb-3">
           <label>Bio</label>
           <textarea name="bio" required placeholder="Enter Bio" class="form-control"></textarea>
@@ -326,72 +349,94 @@ if ($availabilityResult->num_rows > 0) {
     </div>
   </div>
 
-  <div id="availabilityModal" class="modal">
-  <div class="modal-content" style="max-width: 700px; overflow: auto;">
+ <!-- Modal for Availability -->
+<div id="availabilityModal" class="modal">
+    <div class="modal-content">
+        <!-- Close button -->
+        <span class="close" onclick="document.getElementById('availabilityModal').style.display='none';">&times;</span>
 
-      <span class="close" onclick="document.getElementById('availabilityModal').style.display='none';">&times;</span>
-
-      <button onclick="toggleScheduleForm()" style="margin-bottom: 10px; padding: 8px 12px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
-            Add Schedule
-        </button>
-
-        <!-- Schedule Form -->
-        <div id="scheduleForm" style="display: none; margin-bottom: 20px;">
-            
-            <form style="display: flex; align-items: center;">
-                <label for="dayOfWeek" style="margin-right: 10px;">Day:</label>
-                <select id="dayOfWeek" required style="margin-right: 20px; width: auto;">
-                    <option value="">Select a day</option>
-                    <option value="Monday">Monday</option>
-                    <option value="Tuesday">Tuesday</option>
-                    <option value="Wednesday">Wednesday</option>
-                    <option value="Thursday">Thursday</option>
-                    <option value="Friday">Friday</option>
-                    <option value="Saturday">Saturday</option>
-                    <option value="Sunday">Sunday</option>
-                </select>
-
-                <label for="startTime" style="margin-right: 10px;">Start Time:</label>
-                <input type="time" id="startTime" required style="margin-right: 20px;">
-
-                <label for="endTime" style="margin-right: 10px;">End Time:</label>
-                <input type="time" id="endTime" required style="margin-right: 20px;">
-
-                <button type="submit" style="padding: 8px 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                    Submit
-                </button>
-            </form>
+        <!-- Button to add new availability -->
+        <div style="text-align: center; margin-bottom: 20px;">
+            <button id="addScheduleButton" class="btn btn-success" style="width: auto; padding: 10px 70px; font-size: 26px; cursor: pointer; display: inline-block;">Add Schedule</button>
         </div>
 
+     <!-- Form to set new availability (hidden by default) -->
+<div id="addAvailabilityForm" style="display: none;">
+    <h3>Add/Update Availability</h3><br>
+    <form action="t-profilecode.php" method="POST">
+        <div class="mb-3" style="display: flex; align-items: center; margin-bottom: 20px;">
+            <label for="availableDays" style="flex-basis: 20%; font-size: 16px;">Available Days:</label>
+            <select name="availableDays" id="availableDays" class="form-control" style="flex-grow: 1; font-size: 16px;" required>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+            </select>
+        </div>
+        <div class="mb-3" style="display: flex; align-items: center; margin-bottom: 20px;">
+            <label for="startTime" style="flex-basis: 20%; font-size: 16px;">Start Time:</label>
+            <input type="time" name="startTime" id="startTime" class="form-control" style="flex-grow: 1; font-size: 16px;" required>
+        </div>
+        <div class="mb-3" style="display: flex; align-items: center; margin-bottom: 20px;">
+            <label for="endTime" style="flex-basis: 20%; font-size: 16px;">End Time:</label>
+            <input type="time" name="endTime" id="endTime" class="form-control" style="flex-grow: 1; font-size: 16px;" required>
+        </div>
+        <button type="submit" name="setAvailability" class="btn btn-success" style="width: 100%; padding: 10px 30px; font-size: 16px;">Save Availability</button>
+    </form>
+</div>
 
 
-      <table style="width: 100%; border-collapse: collapse;">
-    <tr>
-        <th style="width: 40%; background-color: #f2f2f2; padding: 8px; text-align: left; border: 1px solid #ddd;">Day of Week</th>
-        <th style="width: 30%; background-color: #f2f2f2; padding: 8px; text-align: left; border: 1px solid #ddd;">Start Time</th>
-        <th style="width: 30%; background-color: #f2f2f2; padding: 8px; text-align: left; border: 1px solid #ddd;">End Time</th>
-        <th style="width: 10%; background-color: #f2f2f2; padding: 8px; text-align: left; border: 1px solid #ddd;">Action</th>
-    </tr>
-    <?php if (!empty($availabilityData)) {
-        foreach ($availabilityData as $availability) {
-            // Convert times to 12-hour format
-            $startTime = date("g:i A", strtotime($availability['start_time']));
-            $endTime = date("g:i A", strtotime($availability['end_time']));
-            echo "<tr>
-                    <td style='width: 40%; padding: 8px; border: 1px solid #ddd;'>{$availability['day_of_week']}</td>
-                    <td style='width: 30%; padding: 8px; border: 1px solid #ddd;'>$startTime</td>
-                    <td style='width: 30%; padding: 8px; border: 1px solid #ddd;'>$endTime</td>
-                    <td style='width: 10%; padding: 8px; border: 1px solid #ddd; text-align: center;'>
-                        <button style='padding: 4px 8px; background-color: RED; color: white; border: none; border-radius: 4px; cursor: pointer;'>
-                            X
-                        </button>
-                    </td>
-                  </tr>";
-        }
-    } else {
-        echo "<tr><td colspan='4' style='padding: 8px; text-align: center; border: 1px solid #ddd;'>No availability found.</td></tr>";
-    } ?>
-</table>
+        <!-- Table displaying current availability -->
+        <br><h3>Current Availability</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <th style="width: 40%; background-color: #f2f2f2; padding: 8px; text-align: left; border: 1px solid #ddd;">Day of Week</th>
+                <th style="width: 30%; background-color: #f2f2f2; padding: 8px; text-align: left; border: 1px solid #ddd;">Start Time</th>
+                <th style="width: 30%; background-color: #f2f2f2; padding: 8px; text-align: left; border: 1px solid #ddd;">End Time</th>
+                <th style="width: 10%; background-color: #f2f2f2; padding: 8px; text-align: left; border: 1px solid #ddd;">Action</th>
+            </tr>
+            <?php
+            if (!empty($availabilityData)) {
+                foreach ($availabilityData as $availability) {
+                    // Convert times to 12-hour format
+                    $startTime = date("g:i A", strtotime($availability['start_time']));
+                    $endTime = date("g:i A", strtotime($availability['end_time']));
+                    echo "<tr>
+                            <td style='padding: 8px; border: 1px solid #ddd;'>{$availability['day_of_week']}</td>
+                            <td style='padding: 8px; border: 1px solid #ddd;'>$startTime</td>
+                            <td style='padding: 8px; border: 1px solid #ddd;'>$endTime</td>
+                            <td style='padding: 8px; border: 1px solid #ddd; text-align: center;'>
+                                <form method='POST' action='t-profilecode.php'>
+                                    <input type='hidden' name='availability_id' value='{$availability['id']}'>
+                                    <button type='submit' name='delete_availability' style='padding: 4px 8px; background-color: red; color: white; border: none; border-radius: 4px; cursor: pointer;'>Remove</button>
+                                </form>
+                            </td>
+                          </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='4' style='padding: 8px; text-align: center; border: 1px solid #ddd;'>No availability found.</td></tr>";
+            }
+            ?>
+        </table>
+    </div>
+</div>
+
+<!-- JavaScript to toggle the form visibility -->
+<script>
+    document.getElementById('addScheduleButton').addEventListener('click', function() {
+        // Hide the "Add Schedule" button
+        document.getElementById('addScheduleButton').style.display = 'none';
+        
+        // Show the "Add/Update Availability" form
+        document.getElementById('addAvailabilityForm').style.display = 'block';
+    });
+</script>
+
+
+
 
 
 

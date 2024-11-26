@@ -9,11 +9,18 @@ if(isset($_POST['register_btn']))
     $email = $_POST['email'];
     $degreeProgram = $_POST['degreeProgram'];
     $year = $_POST['year'];
+    $subjectExpertise = $_POST['subjectExpertise'];
     $gdriveLink = $_POST['gdriveLink'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
     $approvalStatus = "Pending";
+
+    // Convert the subjectExpertise array into a string (CSV format) so it wont appear as "ARRAY"
+    //When retrieving subjectExpertise from the database (e.g., for display or further processing), convert the string back into an array using explode:
+    // example: $subjectExpertiseArray = explode(',', $row['subjectExpertise']);
+    $subjectExpertiseString = implode(',', $subjectExpertise); 
+
 
     // Check Email
     $checkemail = "SELECT email FROM tutor WHERE email=? LIMIT 1";
@@ -37,10 +44,10 @@ if(isset($_POST['register_btn']))
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
             // Prepare a statement
-            $stmt = $conn->prepare("INSERT INTO tutor (firstName, lastName, email, degreeProgram, year, gdriveLink, password, approvalStatus ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO tutor (firstName, lastName, email, degreeProgram, year, subjectExpertise, gdriveLink, password, approvalStatus ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             // Bind the parameters to the statement as strings. 
-            $stmt->bind_param("ssssssss", $firstname, $lastname, $email, $degreeProgram, $year, $gdriveLink, $hashed_password, $approvalStatus);
+            $stmt->bind_param("sssssssss", $firstname, $lastname, $email, $degreeProgram, $year, $subjectExpertiseString, $gdriveLink, $hashed_password, $approvalStatus);
 
             // Execute the prepared statement
             $stmt->execute();

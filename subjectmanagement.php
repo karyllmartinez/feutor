@@ -64,21 +64,7 @@ include('php/ad-auth.php');
                                 <label for="subjectName">Subject Name:</label>
                                 <input type="text" class="form-control" id="subjectName" name="subjectName" required>
                             </div>
-                            <div class="form-group">
-                                <label for="category">Category:</label>
-                                <select class="form-control" id="category" name="category" required>
-                                    <option value="High School">High School</option>
-                                    <option value="Senior High School">Senior High School</option>
-                                    <option value="College">College</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="semester">Semester:</label>
-                                <select class="form-control" id="semester" name="semester" required>
-                                    <option value="1st semester">1st semester</option>
-                                    <option value="2nd semester">2nd semester</option>
-                                </select>
-                            </div>
+                          
                             <button type="submit" class="btn btn-primary" name="submit">Add Subject</button>
                         </form>
                     </div>

@@ -14,7 +14,7 @@ body {
     text-align: center;
     padding: 20px;
     width: 45%;
-    height: 100vh;
+    height: 112vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -53,6 +53,24 @@ body {
     padding: 20px;
     background-color: #2D7A41; 
 }
+
+.select2-container {
+    width: 60% !important; /* Ensure it matches the width of other fields */
+    margin-left: 250px;
+}
+
+/* Adjust padding for multi-select dropdown */
+.select2-selection--multiple {
+    padding: 10px;
+    border-radius: 20px !important;
+    background-color: #ffffff;
+    border: 1px solid #6098d8 !important;
+}
+
+.select2-container--default .select2-dropdown {
+    left: -250px !important; /* Align to the left */
+}
+
 .registration-form label {
     font-weight: bold;
     color: white;
@@ -127,4 +145,31 @@ body {
 .btn-primary1:hover {
     background-color: #ffffff;
     border-color: #1e7e34;
+}
+
+label a{
+        color: #4A9AF6; /* Change this to your preferred color */
+        text-decoration: underline; /* Ensures the link is underlined */
+}
+
+
+/* Terms*/
+
+#termsModal .modal-title,
+#termsModal h6 {
+    font-weight: bold;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-left: 270px; /* Push the checkbox to the far right */
+}
+
+.checkbox-container label {
+    margin-bottom: 0; /* Remove bottom margin from label */
+    margin: 5px;
 }

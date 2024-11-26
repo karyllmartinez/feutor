@@ -78,7 +78,7 @@ include('connection/dbconfig.php'); // Include your database connection file
     </nav>
 
 
-    
+
 
     <!-- Content area to display tutor data -->
     <div class="container mt-3" style="align-contents:center;">
@@ -87,19 +87,19 @@ include('connection/dbconfig.php'); // Include your database connection file
 
 
         <form method="GET" action="s-index.php" class="form-inline my-3">
-    <input type="text" name="subjectSearch" class="form-control mr-2" placeholder="Search by Subject">
-    <select name="dayOfWeek" class="form-control mr-2">
-        <option value="">Select Day</option>
-        <option value="Monday">Monday</option>
-        <option value="Tuesday">Tuesday</option>
-        <option value="Wednesday">Wednesday</option>
-        <option value="Thursday">Thursday</option>
-        <option value="Friday">Friday</option>
-        <option value="Saturday">Saturday</option>
-        <option value="Sunday">Sunday</option>
-    </select>
-    <button type="submit" class="btn btn-primary">Search</button>
-</form>
+            <input type="text" name="subjectSearch" class="form-control mr-2" placeholder="Search by Subject">
+            <select name="dayOfWeek" class="form-control mr-2">
+                <option value="">Select Day</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
 
 
         <div class="row justify-content-center">

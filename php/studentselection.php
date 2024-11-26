@@ -379,7 +379,7 @@ if ($result) {
               <div class='modal-body'>
                 <div class='container'>
                   <div class='profile-picture-container'>
-                    <img src='icons/default.jpeg' alt='Profile Picture' class='profile-picturemod'>
+                    <img src='icons/default.png' alt='Profile Picture' class='profile-picturemod'>
                   </div>
                   <p class='studentName'>" . htmlspecialchars($row['studentFullName']) . "</p>
                   <p class='degreeProgrammod'>" . htmlspecialchars($row['degreeProgram']) . " - " . htmlspecialchars($row['year']) . "</p>
