@@ -21,22 +21,6 @@ $subject = $_POST['subjectExpertise'];
 $teachingMode = $_POST['teachingMode'];
 $need = $_POST['need'];
 
-// Check if the selected date is already booked for the tutor
-$query = "SELECT * FROM session WHERE tutorID = ? AND sessionDate = ? AND startTime = ?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("iss", $tutorID, $sessionDate, $startTime);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
-    // Date is already booked - show alert and retain form data
-    echo "<script>
-            alert('The selected date and time are already booked. Please select another date or time.');
-            window.history.back(); // Return to the previous form with the data retained
-          </script>";
-    exit();
-}
-
 // Insert session data into the session table
 $query = "INSERT INTO session (tutorID, studentID, sessionDate, startTime, endTime, duration, subject, teachingMode, need, status) 
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -50,22 +34,79 @@ $status = "Pending";
 if ($stmt->execute()) {
     // Session added successfully
     $_SESSION['message'] = "Session requested successfully.";
-    header("Location: s-pending.php");
-    exit();
-}
 
-//code not working
+    // Insert notification
+    $notificationMessage = "You have a pending session request from a student.";
+    $notificationStatus = "unread"; // Correct the status to match ENUM values
 
- else {
-    // Error in adding session
-    echo "<script>
-            alert('Schedule the date and time base on tutor's availability.');
-            window.history.back(); // Return to the previous form with the data retained
-          </script>";
+    // Insert into notifications table
+    $notificationQuery = "INSERT INTO notifications (tutorID, studentID, message, status, created_at) 
+                      VALUES (?, ?, ?, ?, NOW())";
+    $notificationStmt = $conn->prepare($notificationQuery);
+
+    if ($notificationStmt === false) {
+        // Handle error in prepare
+        echo "Error in preparing notification statement: " . $conn->error;
+        exit();
+    }
+
+    $notificationStmt->bind_param("iiss", $tutorID, $studentID, $notificationMessage, $notificationStatus);
+
+    if ($notificationStmt->execute()) {
+        // Successful execution
+        header("Location: s-pending.php");
+        exit();
+    } else {
+        // Error executing the statement
+        echo "Error executing notification statement: " . $notificationStmt->error;
+        exit();
+    }
+
+} else {
+    echo "
+    <div id='errorModal' style='
+        position: fixed;
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+        background-color: rgba(0,0,0,0.5); 
+        display: flex; 
+        justify-content: center; 
+        align-items: center;
+        z-index: 1000;
+    '>
+        <div style='
+            background-color: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            text-align: center; 
+            width: 300px;
+        '>
+            <h3 style='margin: 0 0 10px;'>Error</h3>
+            <p>Sorry, this date is already booked.</p>
+            <button onclick='closeModal()' style='
+                background-color: #007bff; 
+                color: white; 
+                border: none; 
+                padding: 10px 20px; 
+                border-radius: 5px; 
+                cursor: pointer;
+            '>Close</button>
+        </div>
+    </div>
+    <script>
+        function closeModal() {
+            document.getElementById('errorModal').style.display = 'none';
+            window.history.back();
+        }
+    </script>";
     exit();
 }
 
 // Close statement and connection
 $stmt->close();
+$notificationStmt->close();
 $conn->close();
+
 ?>

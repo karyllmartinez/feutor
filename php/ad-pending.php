@@ -13,12 +13,19 @@ if (isset($_POST['approve_btn'])) {
         $update_query = "UPDATE tutor SET approvalStatus='Approved', subjectExpertise='$subjectExpertise', ratePerHour='$ratePerHour' WHERE tutorID='$tutorID'";
         $update_result = mysqli_query($conn, $update_query);
 
-        $_SESSION['message'] = $update_result ? "Tutor approved successfully" : "Failed to approve tutor";
+        // Send a notification after approval
+        if ($update_result) {
+            $message = "Your tutor application has been approved.";
+            $notify_query = "INSERT INTO notifications (tutorID, message, status) VALUES ('$tutorID', '$message', 'unread')";
+            mysqli_query($conn, $notify_query);
+            $_SESSION['message'] = "Tutor approved successfully";
+        } else {
+            $_SESSION['message'] = "Failed to approve tutor";
+        }
     } else {
         $_SESSION['message'] = "Required fields missing for approval";
     }
 }
-
 
 if (isset($_POST['decline_btn'])) {
     // Handle decline action
@@ -29,7 +36,15 @@ if (isset($_POST['decline_btn'])) {
         $update_query = "UPDATE tutor SET approvalStatus='Declined' WHERE tutorID='$tutorID'";
         $update_result = mysqli_query($conn, $update_query);
 
-        $_SESSION['message'] = $update_result ? "Tutor declined successfully" : "Failed to decline tutor";
+        // Send a notification after decline
+        if ($update_result) {
+            $message = "Your tutor application has been declined.";
+            $notify_query = "INSERT INTO notifications (tutorID, message, status) VALUES ('$tutorID', '$message', 'unread')";
+            mysqli_query($conn, $notify_query);
+            $_SESSION['message'] = "Tutor declined successfully";
+        } else {
+            $_SESSION['message'] = "Failed to decline tutor";
+        }
     }
 }
 
@@ -40,21 +55,21 @@ $result = mysqli_query($conn, $query);
 ?>
 
 <table class="table">
-        <thead>
-            <tr>
-                <th style="width: 10%;">Tutor ID</th>
-                <th style="width: 15%;">First Name</th>
-                <th style="width: 15%;">Last Name</th>
-                <th style="width: 20%;">Email</th>
-                <th style="width: 15%;">Degree Program</th>
-                <th style="width: 5%;">Year</th>
-                <th style="width: 10%;">G-Drive Link</th>
-                <th style="width: 15%;">Subject Expertise</th>
-                <th style="width: 10%;">Rate Per Hour</th>
-                <th style="width: 10%;">Action</th>
-            </tr>
-        </thead>
-        <tbody>
+    <thead>
+        <tr>
+            <th style="width: 10%;">Tutor ID</th>
+            <th style="width: 15%;">First Name</th>
+            <th style="width: 15%;">Last Name</th>
+            <th style="width: 20%;">Email</th>
+            <th style="width: 15%;">Degree Program</th>
+            <th style="width: 5%;">Year</th>
+            <th style="width: 10%;">G-Drive Link</th>
+            <th style="width: 15%;">Subject Expertise</th>
+            <th style="width: 10%;">Rate Per Hour</th>
+            <th style="width: 10%;">Action</th>
+        </tr>
+    </thead>
+    <tbody>
         <?php
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
@@ -86,21 +101,19 @@ $result = mysqli_query($conn, $query);
                             </div>
                     </td>
                     <td>
-    <input 
-        type="number" 
-        name="ratePerHour" 
-        required 
-        placeholder="Enter Rate Per Hour" 
-        class="form-control form-control-lg" 
-        style="min-width: 150px;" 
-        step="0.01">
-</td>
-
+                        <input 
+                            type="number" 
+                            name="ratePerHour" 
+                            required 
+                            placeholder="Enter Rate Per Hour" 
+                            class="form-control form-control-lg" 
+                            style="min-width: 150px;" 
+                            step="0.01">
+                    </td>
 
                     <td>
-                            <button type="submit" class="btn btn-success" name="approve_btn">Approve</button>
-                            <button type="submit" class="btn btn-danger" name="decline_btn">Decline</button>
-                        </form>
+                        <button type="submit" class="btn btn-success" name="approve_btn">Approve</button>
+                        <button type="submit" class="btn btn-danger" name="decline_btn">Decline</button>
                     </td>
                 </tr>
                 <?php

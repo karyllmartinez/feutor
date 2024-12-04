@@ -17,6 +17,9 @@ include('php/approvalStatus.php');
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/approval-status.css">
 
+  <!-- Font Awesome for bell icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 
 </head>
 <body>
@@ -49,9 +52,9 @@ include('php/approvalStatus.php');
           <li class="nav-item">
             <a class="nav-link" href="#">Messages</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Notifications</a>
-          </li>
+          
+         
+
           <li class="nav-item dropdown user-dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <?php echo $tutor_firstname; ?>

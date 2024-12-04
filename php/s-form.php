@@ -22,6 +22,9 @@ if ($teachingMode === 'Online') {
     echo "<label for='school'>In School</label>";
 }
 
+
+
+
 // Retrieve tutor information based on the query parameter
 if (isset($_GET['tutor'])) {
     $tutorName = $_GET['tutor'];

@@ -1,7 +1,5 @@
 <?php
-
 include('connection/dbconfig.php');
-
 
 /// Function to handle tutor deletion
 function deleteTutor($tutorID) {
@@ -31,7 +29,6 @@ if (isset($_POST['delete_btn'])) {
     }
 }
 
-
 // Fetch approved tutors
 $approved_query = "SELECT * FROM tutor WHERE approvalStatus='Approved'";
 $approved_result = mysqli_query($conn, $approved_query);
@@ -52,38 +49,199 @@ while ($row = mysqli_fetch_assoc($approved_result)) {
     echo "<td>" . $row['subjectExpertise'] . "</td>";
     echo "<td>" . $row['ratePerHour'] . "</td>";
     echo "<td>
-            <form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this tutor?\")'>
-                <input type='hidden' name='tutorID' value='" . $row['tutorID'] . "'>
-                <button type='submit' class='btn btn-danger' name='delete_btn'>Delete</button>
-            </form>
+           <button type='button' class='btn btn-danger open-modal-btn' data-tutorid='" . $row['tutorID'] . "'>Delete</button>
         </td>";
-    // Add more table cells as needed
-   
     echo "</tr>";
 }
-
-// Output declined tutors in a separate table
-echo "</tbody></table><h2>Declined Student Tutors</h2><table class='table'><thead><tr><th>Tutor ID</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Degree Program / Level of Highschool</th><th>Year</th><th>Google Drive Link</th><th>Action</th></tr></thead><tbody>";
-
-while ($row = mysqli_fetch_assoc($declined_result)) {
-    echo "<tr>";
-    echo "<td>" . $row['tutorID'] . "</td>";
-    echo "<td>" . $row['firstName'] . "</td>";
-    echo "<td>" . $row['lastName'] . "</td>";
-    echo "<td>" . $row['email'] . "</td>";
-    echo "<td>" . $row['degreeProgram'] . "</td>";
-    echo "<td>" . $row['year'] . "</td>";
-    echo "<td>" . $row['gdriveLink'] . "</td>";
-    echo "<td>
-            <form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this tutor?\")'>
-                <input type='hidden' name='tutorID' value='" . $row['tutorID'] . "'>
-                <button type='submit' class='btn btn-danger' name='delete_btn'>Delete</button>
-            </form>
-        </td>";
-    // Add more table cells as needed
-   
-    echo "</tr>";
-}
-
-
 ?>
+
+<!-- Modal HTML (Custom Design) -->
+<div class="custom-modal" id="deleteModal">
+    <div class="custom-modal-content">
+        <span class="close-btn">&times;</span>
+        <p>Are you sure you want to delete this tutor?</p>
+        <form method="POST" id="deleteForm">
+            <input type="hidden" name="tutorID" id="tutorID">
+            <div class="modal-buttons">
+                <button type="submit" class="button" name="delete_btn">Delete</button>
+                <button type="button" class="cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+/* Modal Background */
+.custom-modal {
+    display: none; /* Hide modal by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    opacity: 0; /* Start with opacity 0 */
+    animation: fadeIn 0.3s forwards; /* Animation for fade-in */
+}
+
+/* Modal Content Box */
+.custom-modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-50px); /* Start above the screen */
+    opacity: 0; /* Start with opacity 0 */
+    animation: slideIn 0.3s forwards, fadeInContent 0.3s forwards; /* Animation for slide-in and fade-in */
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Slide-in Animation for Modal Content */
+@keyframes slideIn {
+    0% {
+        transform: translateY(-50px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Fade-in Animation for Modal Content */
+@keyframes fadeInContent {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Close button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    cursor: pointer;
+    visibility: hidden;
+}
+
+/* Modal Buttons */
+.modal-buttons {
+    margin-top: 20px;
+}
+
+/* "Delete" Button */
+.button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: darkred;
+}
+
+/* "Cancel" Button */
+.cancel-btn {
+    background-color: gray;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.cancel-btn:hover {
+    background-color: darkgray;
+}
+
+/* Close modal animation when closed */
+.custom-modal.close {
+    animation: fadeOut 0.3s forwards; /* Fade-out animation for the background */
+}
+
+/* Slide-out animation for modal content */
+.custom-modal-content.close {
+    animation: slideOut 0.3s forwards, fadeOutContent 0.3s forwards; /* Slide-out and fade-out */
+}
+
+/* Fade-out Animation for Modal */
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Slide-out Animation for Modal Content */
+@keyframes slideOut {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-50px);
+    }
+}
+
+/* Fade-out Animation for Modal Content */
+@keyframes fadeOutContent {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+</style>
+
+<script>
+// Open modal when delete button is clicked
+document.querySelectorAll('.open-modal-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        // Get tutorID from data attribute
+        var tutorID = this.getAttribute('data-tutorid');
+        
+        // Set tutorID to hidden input
+        document.getElementById('tutorID').value = tutorID;
+        
+        // Show the modal
+        document.getElementById('deleteModal').style.display = 'flex';
+    });
+});
+
+// Close modal on clicking the close button
+document.querySelector('.close-btn').addEventListener('click', function() {
+    document.getElementById('deleteModal').style.display = 'none';
+});
+
+// Close modal on clicking the Cancel button
+document.querySelector('.cancel-btn').addEventListener('click', function() {
+    document.getElementById('deleteModal').style.display = 'none';
+});
+</script>

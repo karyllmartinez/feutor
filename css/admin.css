@@ -1,0 +1,55 @@
+    /*NAVBAR STYLE*/
+    .navbar-custom{
+        background-color: #1d5512;
+        border-bottom: 2px solid #e1e0c2; /* thin bottom navbar color */
+    }
+    
+    .navbar-custom .navbar-brand {
+        color: #e1e0c2; /* Change the ADMIN DASHBOARD font color to white */
+        font-weight: bold;
+    }
+    
+    .navbar-custom .nav-link{
+        color: white;
+        transition: color 0.2s ease-in-out; /* Add transition for smooth hover effect */
+    }
+    
+    .navbar-custom .nav-link:hover {
+        color: #f2b41b; /* Hover effect color */
+    }
+    
+    .navbar-custom .nav-link:active,
+    .navbar-custom .nav-link.active {
+        color: #f2b41b; /* Active (clicked) state color */
+    }
+    
+    .navbar a {
+        font-family: Helvetica;
+    }
+    
+    .navbar-custom .nav-link, 
+    .navbar-custom a {
+        color: white; /* Change nav-link and LOGOUT link font color to white */
+        text-decoration: none; /* Remove underline */
+        transition: color 0.2s ease-in-out; /* Smooth hover effect */
+        margin-right: 20px; /* Add space between links */
+    }
+    
+    .navbar-custom .nav-link:hover, 
+    .navbar-custom a:hover {
+        color: #f2b41b; /* Hover effect color */
+    }
+    
+    .navbar-custom .nav-link:active, 
+    .navbar-custom .nav-link.active, 
+    .navbar-custom a:active {
+        color: #f2b41b; /* Active (clicked) state color */
+    }
+    
+    /*
+    *
+    *
+    *
+    *
+    *
+    */
