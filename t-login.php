@@ -1,34 +1,109 @@
 <?php
 session_start();
-include ('php/t-restrict.php');
+
+include('connection/dbconfig.php');
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require './PHPMailer/src/Exception.php';
+require './PHPMailer/src/PHPMailer.php';
+require './PHPMailer/src/SMTP.php';
+
+if (isset($_SESSION['tutor_id'])) {
+    header("Location: t-index.php");
+    exit();
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+    $_SESSION['email'] = $email;
+
+    // Prepared statement to prevent SQL injection
+    $sql = "SELECT tutorID, firstname, lastname, email, password FROM tutor WHERE email=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+
+    if ($data && password_verify($password, $data['password'])) {
+        // Generate OTP
+        $otp = rand(100000, 999999);
+        $otp_expiry = date("Y-m-d H:i:s", strtotime("+3 minutes"));
+
+        // Send OTP via email
+        $mail = new PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->Port = 587;
+            $mail->SMTPSecure = 'tls';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'moshtekan@gmail.com'; // Your email address
+            $mail->Password = 'hgiv uxcl zevl drlx'; // Your app password
+            $mail->setFrom('example@gmail.com', 'Two Factor Authentication');
+            $mail->addAddress($email, $data['firstname'] . ' ' . $data['lastname']);
+            $mail->Subject = "Your OTP for Login";
+            $mail->Body = "Your OTP is: $otp";
+            $mail->send();
+        } catch (Exception $e) {
+            $_SESSION['message'] = "Failed to send OTP. Please try again.";
+            header("Location: t-login.php");
+            exit();
+        }
+
+        // Store OTP and expiry in the database
+        $update_sql = "UPDATE tutor SET otp=?, otp_expiry=? WHERE tutorID=?";
+        $update_stmt = $conn->prepare($update_sql);
+        $update_stmt->bind_param("ssi", $otp, $otp_expiry, $data['tutorID']);
+        $update_stmt->execute();
+
+        // Store temporary user data in session
+        $_SESSION['temp_tutor'] = [
+            'tutorID' => $data['tutorID'],
+            'otp' => $otp
+        ];
+
+        header("Location: otp_tutor.php");
+        exit();
+    } else {
+        $_SESSION['message'] = "Invalid Email or Password. Please try again.";
+        header("Location: t-login.php");
+        exit();
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>Tutor Login</title>
+    <title>Tutor Login System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/ST-login.css">
 </head>
+
 <body>
-    
+
     <div class="background-message">
         <a href="t-registration.php" class="btn btn-primary1">Sign Up</a>
+        <p class="text-center">Don't have an account?</p>
     </div>
     <div class="registration-form">
         <div class="card">
             <div class="card-header">
-                <h1>SIGN IN</h1>
+                <h1>Tutor SIGN IN</h1>
             </div>
             <div class="card-body">
-            <?php if(isset($_SESSION['message'])): ?>
-    <div class="message-container">
-        <h4 class="alert alert-warning"><?= $_SESSION['message'] ?></h4>
-    </div>
-    <?php unset($_SESSION['message']); ?>
-<?php endif; ?>
+                <?php if (isset($_SESSION['message'])): ?>
+                    <div class="message-container">
+                        <h4 class="alert alert-warning"><?= $_SESSION['message'] ?></h4>
+                    </div>
+                    <?php unset($_SESSION['message']); ?>
+                <?php endif; ?>
 
-
-                <form action="t-logincode.php" method="POST" class="body-reg">
+                <form action="t-login.php" method="POST" class="body-reg">
 
                     <div class="mb-3">
                         <label>Email Address</label>
@@ -38,13 +113,12 @@ include ('php/t-restrict.php');
                         <label>Password</label>
                         <input type="password" name="password" required class="form-control">
                     </div>
+
                     <div class="mb-3 sign-up-buttons">
-                        <a href="land.php" class=" nope">I DON'T WANT TO SIGN IN</a>
-                        <button type="submit" name="login_button" class="btn btn-primary logbtn">Submit</button>
+                        <a href="land.php" class="nope">I DON'T WANT TO SIGN IN</a>
+                        <input type="submit" name="login" class="btn btn-primary logbtn" value="Submit">
                     </div>
                 </form>
-
-               
 
             </div>
         </div>
@@ -53,4 +127,5 @@ include ('php/t-restrict.php');
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

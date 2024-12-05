@@ -83,7 +83,7 @@ echo "<style type='text/css'>
   font-style: italic; /* Italic font */
 }
 .btn-outline-custom1,
-.btn-outline-custom2 {
+.btn-outline-custom2,.btn-outline-custom3 {
     color: #0F422A;
     background-color: #ffffff;
     border-color: #0F422A;
@@ -95,11 +95,25 @@ echo "<style type='text/css'>
 }
 
 .btn-outline-custom1 {
-    top: 20%;
+    top: 10%;
 }
 
 .btn-outline-custom2 {
-    top: 49%;
+    top: 40%;
+}
+.rate{
+  top:70%;
+  left:5%;
+  width:200px;
+  height:40px;
+  position: absolute;
+  z-index: 2;
+  font-size: 15px;
+  font-weight: 300px;
+
+}
+.btn-outline-custom3 {
+    top: 65%;
 }
 .rate{
   top:80%;
@@ -112,23 +126,29 @@ echo "<style type='text/css'>
   font-weight: 300px;
 
 }
-
 </style>";
 
 // Retrieve logged-in tutor's tutorID
 $tutorID = $_SESSION['auth_tutor']['tutor_id'];
 // Query to fetch sessions for the logged-in tutor with student names, ordered by nearest session date
-$sql = "SELECT s.sessionID, DATE_FORMAT(s.sessionDate, '%M %e, %Y') AS formattedSessionDate, TIME_FORMAT(s.startTime, '%h:%i %p') AS formattedStartTime, TIME_FORMAT(s.endTime, '%h:%i %p') AS formattedEndTime, s.duration, s.subject, s.teachingMode, s.need, s.paymentStatus, 
-    CASE
-        WHEN s.status = 'Approved' THEN 'Paid'
-        ELSE s.status
-    END AS status,
-    CONCAT(st.firstname, ' ', st.lastname) AS studentFullName, st.degreeProgram, st.year, t.ratePerHour
-FROM session s
-INNER JOIN student st ON s.studentID = st.studentID
-INNER JOIN tutor t ON s.tutorID = t.tutorID
-WHERE s.tutorID = ? AND (s.status = 'Approved' OR s.status = 'Waiting for Payment')
-ORDER BY s.sessionDate ASC"; // Order by session date in ascending order
+$sql = "SELECT s.sessionID, 
+                DATE_FORMAT(s.sessionDate, '%M %e, %Y') AS formattedSessionDate, 
+                TIME_FORMAT(s.startTime, '%h:%i %p') AS formattedStartTime, 
+                TIME_FORMAT(s.endTime, '%h:%i %p') AS formattedEndTime, 
+                s.duration, s.subject, s.teachingMode, s.need, s.paymentStatus, 
+                CASE
+                    WHEN s.status = 'Approved' THEN 'Paid'
+                    ELSE s.status
+                END AS status,
+                CONCAT(st.firstname, ' ', st.lastname) AS studentFullName, 
+                st.degreeProgram, st.year, t.ratePerHour, 
+                st.email AS studentEmail  -- Added student's email here
+        FROM session s
+        INNER JOIN student st ON s.studentID = st.studentID
+        INNER JOIN tutor t ON s.tutorID = t.tutorID
+        WHERE s.tutorID = ? AND (s.status = 'Approved' OR s.status = 'Waiting for Payment')
+        ORDER BY s.sessionDate ASC"; // Order by session date in ascending order
+
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $tutorID);
@@ -157,33 +177,44 @@ if ($result) {
         $sessionID = $row['sessionID'];
     
 
-        echo "<div class='col-md-12 mb-3' style = 'margin-left:0px; width:100% !important;'>";
-        echo "<div class='card shadow custom-card' style='height: 200px; margin-top: 1%;'>";
-        echo "<div class='card-body'>";
+        // Inside the loop where you display session details:
+echo "<div class='col-md-12 mb-3' style = 'margin-left:0px; width:100% !important;'>";
+echo "<div class='card shadow custom-card' style='height: 200px; margin-top: 1%;'>";
+echo "<div class='card-body'>";
 
-        echo "<h4 class='tutorName'>" . $row['studentFullName']  ."</h4>";
-        echo "<p class='mode'>" . "<img src = 'icons/mode.png' class = 'iconmode'/>"  . $row['teachingMode'] . "  ". "<strong>|</strong>" . "  ". $row["formattedSessionDate"] .  "  ". "<strong>|</strong>" . "  " .   $row["formattedStartTime"] ." - ".   $row["formattedEndTime"] ."</p>";
-        echo "<p class='subj'> " . "<img src = 'icons/subj.png' class = 'iconsubj'/>"  . $row['subject'] . "</p>";
-        
-        echo "<p class = 'bio'>Status: <br>" . $row['status'] . "</p>";
+echo "<h4 class='tutorName'>" . $row['studentFullName']  ."</h4>";
+echo "<p class='mode'>" . "<img src = 'icons/mode.png' class = 'iconmode'/>"  . $row['teachingMode'] . "  ". "<strong>|</strong>" . "  ". $row["formattedSessionDate"] .  "  ". "<strong>|</strong>" . "  " .   $row["formattedStartTime"] ." - ".   $row["formattedEndTime"] ."</p>";
+echo "<p class='subj'> " . "<img src = 'icons/subj.png' class = 'iconsubj'/>"  . $row['subject'] . "</p>";
+echo "<p class = 'bio'>Status: <br>" . $row['status'] . "</p>";
+echo "<p class= 'rate'>Total Cost: ₱" . number_format($row['duration'] * $row['ratePerHour'], 2) . "</p>";
 
-        echo "<p class= 'rate'>Total Cost: ₱" . number_format($row['duration'] * $row['ratePerHour'], 2) . "</p>";
+echo "<button class='btn btn-outline-custom1' data-toggle='modal' data-target='#detailsModal_$sessionID'>View Details</button>";
 
-        echo "<button class='btn btn-outline-custom1' data-toggle='modal' data-target='#detailsModal_$sessionID'>View Details</button>";
-     
-      if ($row['status'] == 'Paid') {
-        echo "<a href='php/finishedsession.php?sessionID=" . $sessionID . "'>
-                <button class='btn btn-outline-custom2'>Mark as Finished</button>
-              </a><br><br>";
-    } else if ($row['status'] == 'Waiting for Payment') {
-        echo "<a href='php/declinedsession.php?sessionID=" . $sessionID . "'>
-                <button class='btn btn-outline-custom2'>Decline</button>
-              </a><br><br>";
-    }
-    
-        echo "</div>";
-        echo "</div>";
-        echo "</div>";
+if ($row['status'] == 'Paid') {
+    echo "<a href='php/finishedsession.php?sessionID=" . $sessionID . "'>
+            <button class='btn btn-outline-custom2'>Mark as Finished</button>
+          </a><br><br>";
+} else if ($row['status'] == 'Waiting for Payment') {
+    echo "<a href='php/declinedsession.php?sessionID=" . $sessionID . "'>
+            <button class='btn btn-outline-custom2'>Decline</button>
+          </a><br><br>";
+}
+
+// Message button
+$studentEmail = $row['studentEmail'];  // Get the student's email
+
+$teamsUrl = "https://teams.microsoft.com/l/chat/0/0?users=" . urlencode($studentEmail);
+
+echo "
+    <a href='$teamsUrl' target='_blank'>
+        <button class='btn btn-outline-custom3' style='margin-top: 10px;'>Message</button>
+    </a>
+";
+
+echo "</div>";
+echo "</div>";
+echo "</div>";
+
 
 
         echo "
@@ -254,5 +285,4 @@ if ($result) {
 // Close connection
 mysqli_close($conn);
 ?>
-
 

@@ -1,11 +1,7 @@
-
-
 <?php
 echo "<script src='https://www.paypal.com/sdk/js?client-id=AU6AYP9LgxUcMt-MC3QjSq0ByXzxhDNXZCwVRNQ0fbPpr7avAKTncNpgsEIBdfODYUJ6BXqFXh8bGYIM&disable-funding=credit,card'></script>";
 
-
 echo "<style type='text/css'>
-
 .profile-picture {
   margin: %;
   max-width: 200px;
@@ -96,6 +92,7 @@ echo "<style type='text/css'>
     position: absolute;
     left: 80%;
     width: 200px; /* Adjust width as needed */
+    margin-top: 5px; /* Add a small margin to space them slightly apart */
 }
 
 .btn-outline-custom1 {
@@ -105,6 +102,15 @@ echo "<style type='text/css'>
 .btn-outline-custom2 {
     top: 49%;
 }
+
+.messageBtn {
+    position: absolute;
+    top: 49%;
+    left: 80%;
+    width: 200px; /* Make sure it's the same width as the other button */
+    margin-top: 5px; /* Small margin for separation */
+}
+
 .rate{
   top:80%;
   left:5%;
@@ -114,7 +120,6 @@ echo "<style type='text/css'>
   z-index: 2;
   font-size: 15px;
   font-weight: 300px;
-
 }
 
 </style>";
@@ -124,7 +129,7 @@ $studentID = $_SESSION['auth_user']['user_id'];
 
 // Query to fetch sessions for the logged-in student
 $sql = "SELECT s.sessionID, DATE_FORMAT(s.sessionDate, '%M %e, %Y') AS formattedSessionDate, TIME_FORMAT(s.startTime, '%h:%i %p') AS formattedStartTime, TIME_FORMAT(s.endTime, '%h:%i %p') AS formattedEndTime, s.duration, s.subject, s.teachingMode, s.need, s.paymentStatus, s.status, 
-        CONCAT(t.firstname, ' ', t.lastname) AS tutorFullName, t.ratePerHour, t.profilePicture
+        CONCAT(t.firstname, ' ', t.lastname) AS tutorFullName, t.ratePerHour, t.profilePicture, t.email AS tutorEmail
         FROM session s
         INNER JOIN tutor t ON s.tutorID = t.tutorID
         WHERE s.studentID = ? AND s.status = 'Approved'";
@@ -142,6 +147,7 @@ if ($result) {
     // Loop through the result set and display the data
     while ($row = mysqli_fetch_assoc($result)) {
         $sessionID = $row['sessionID'];
+        $tutorEmail = $row['tutorEmail']; // Get tutor's email
 
         echo "<div class='col-md-12 mb-3' style='margin-left:0px; width:100% !important;'>";
         echo "<div class='card shadow custom-card' style='height: 200px; margin-top: 1%;'>";
@@ -155,16 +161,19 @@ if ($result) {
         echo "<p class='bio'>Status: <br>" . $row['status'] . "</p>";
         echo "<p class='rate'>Total Cost: ₱" . number_format($row['duration'] * $row['ratePerHour'], 2) . "</p>";
 
-
+        // PayPal Button for payment
         echo "<button class='btn btn-outline-custom1' data-toggle='modal' data-target='#detailsModal_$sessionID'>View Details</button>";
 
+        // Add Message Button to redirect to Teams chat
+        $teamsLink = "https://teams.microsoft.com/l/chat/0/0?users=" . urlencode($tutorEmail);
+        echo "<a href='" . $teamsLink . "' target='_blank' class='btn btn-outline-custom2 messageBtn'>Message</a>";
+
         echo "</div>";
         echo "</div>";
         echo "</div>";
 
+        // Modal for session details
         echo "
-
-    
         <div class='modal fade' id='detailsModal_$sessionID' tabindex='-1' role='dialog' aria-hidden='true'>
           <div class='modal-dialog modal-dialog-centered' role='document'>
             <div class='modal-content'>
@@ -184,46 +193,36 @@ if ($result) {
                     </tr>
                     <tr>
                       <td>
-                      <div>". "Teaching Mode: " . $row['teachingMode'] . "</div>
-                        
+                        <div>". "Teaching Mode: " . $row['teachingMode'] . "</div>
                       </td>
                     </tr>
                     <tr>
                       <td>
                         <p style='font-size: 15px; display: flex; justify-content: start;'>Subject: " . $row['subject'] . "</p>
-                        
                       </td>
                     </tr>
-
                     <tr>
                       <td>
                         <div>". "Date:" . $row['formattedSessionDate'] . "</div>
                       </td>
                     </tr>
-
                     <tr>
                       <td>
-                      <div>". "Time: " . $row['formattedStartTime'] . " - ". $row['formattedEndTime']. "</div>
+                        <div>". "Time: " . $row['formattedStartTime'] . " - ". $row['formattedEndTime']. "</div>
                       </td>
                     </tr>
-
                     <tr>
                       <td>
                         <p style='font-size: 15px; display: flex; justify-content: start;'>Your Note: " . $row['need'] . "</p>
                       </td>
                     </tr>
-                  
-  
-
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
         </div>
-  ";
-
-       
+        ";
     }
 } else {
     echo "Error: " . mysqli_error($conn);

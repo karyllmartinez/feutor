@@ -87,10 +87,24 @@ echo "<style type='text/css'>
         border-color: #0F422A;
         font-weight: bold;
         letter-spacing: 0.05em;
-      
-        bottom:13%;
+        bottom:35%;
        left:80%;
-       width:200px;
+       width:250px;
+       height:40px;
+       position: absolute;
+       z-index: 2;
+   
+      }
+
+   .btn-view-message{
+        color: #0F422A;
+        background-color: #ffffff;
+        border-color: #0F422A;
+        font-weight: bold;
+        letter-spacing: 0.05em;
+        bottom:10%;
+       left:80%;
+       width:250px;
        height:40px;
        position: absolute;
        z-index: 2;
@@ -106,9 +120,6 @@ echo "<style type='text/css'>
         font-size: 20px;
         font-weight: 300px;
       }
-
-
-
 
 
       .close {
@@ -305,13 +316,18 @@ echo "<style type='text/css'>
 // Retrieve logged-in tutor's tutorID
 $tutorID = $_SESSION['auth_tutor']['tutor_id'];
 // Query to fetch sessions for the logged-in tutor with student names
-$sql = "SELECT s.sessionID, DATE_FORMAT(s.sessionDate, '%M %e, %Y') AS formattedSessionDate, TIME_FORMAT(s.startTime, '%h:%i %p') AS formattedStartTime, TIME_FORMAT(s.endTime, '%h:%i %p') AS formattedEndTime, s.duration, s.subject, s.teachingMode, s.need, s.paymentStatus, s.status, 
-CONCAT(st.firstname, ' ', st.lastname) AS studentFullName, st.degreeProgram, st.year, t.ratePerHour
-FROM session s
-INNER JOIN student st ON s.studentID = st.studentID
-INNER JOIN tutor t ON s.tutorID = t.tutorID
-WHERE s.tutorID = ? AND s.status = 'Pending'
-ORDER BY s.sessionID DESC"; // Order by session ID in descending order
+$sql = "SELECT s.sessionID, DATE_FORMAT(s.sessionDate, '%M %e, %Y') AS formattedSessionDate, 
+        TIME_FORMAT(s.startTime, '%h:%i %p') AS formattedStartTime, 
+        TIME_FORMAT(s.endTime, '%h:%i %p') AS formattedEndTime, 
+        s.duration, s.subject, s.teachingMode, s.need, s.paymentStatus, s.status, 
+        CONCAT(st.firstname, ' ', st.lastname) AS studentFullName, 
+        st.degreeProgram, st.year, st.email, t.ratePerHour
+        FROM session s
+        INNER JOIN student st ON s.studentID = st.studentID
+        INNER JOIN tutor t ON s.tutorID = t.tutorID
+        WHERE s.tutorID = ? AND s.status = 'Pending'
+        ORDER BY s.sessionID DESC";
+
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $tutorID);
 $stmt->execute();
@@ -360,9 +376,20 @@ if ($result) {
             echo "<p class='duration'>" . $row['duration'] . "hrs</p>";
         }
 
-        echo "<button type='button' class='btn btn-outline-success btn-view-details' data-toggle='modal' data-target='#detailsModal{$sessionID}'>View More Details</button><br><br>";
+        echo "
+    <div>
+        <button type='button' class='btn btn-view-details' data-toggle='modal' data-target='#detailsModal{$sessionID}'>
+            View More Details
+        </button>
+        <button type='button' class='btn btn-view-message' onclick=\"window.open('https://teams.microsoft.com/l/chat/0/0?users=" . urlencode($row['email']) . "', '_blank')\" style='margin-top: 10px;'>
+            Message
+        </button>
+    </div>";
+    
 
+        
 
+        
         echo "</div>";
         echo "</div>";
         echo "</div>";
@@ -400,7 +427,7 @@ if ($result) {
 
 
 
-              echo "<button class='button buttonM'>Message</button>
+              echo "
                   </div>
               </div>
               <div class='modal-footer'> <!-- Modal footer -->
