@@ -170,12 +170,6 @@ if ($result) {
         echo "<p class= 'rate'>Total Cost: ₱" . number_format($row['duration'] * $row['ratePerHour'], 2) . "</p>";
 
         echo "<button class='btn btn-outline-custom1' data-toggle='modal' data-target='#detailsModal_$sessionID'>View Details</button>";
-      
-     
-      
-
-        
-       
 
         echo "</div>";
         echo "</div>";

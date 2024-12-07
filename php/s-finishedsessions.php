@@ -102,7 +102,8 @@ echo "<style type='text/css'>
 }
 
 .rate {
-    float: left;
+    display: flex;
+    justify-content:left;
     height: 46px;
     
 }
@@ -406,6 +407,8 @@ echo "
                         <input type='radio' id='star1_$sessionID' name='way' value='1' />
                         <label for='star1_$sessionID' class='star'>&#9733;</label>
                     </div>
+
+                    
 
                     <br>
 

@@ -25,7 +25,7 @@ $need = $_POST['need'];
 $query = "INSERT INTO session (tutorID, studentID, sessionDate, startTime, endTime, duration, subject, teachingMode, need, status) 
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("iississsss", $tutorID, $studentID, $sessionDate, $startTime, $endTime, $duration, $subject, $teachingMode, $need, $status);
+$stmt->bind_param("iissssssss", $tutorID, $studentID, $sessionDate, $startTime, $endTime, $duration, $subject, $teachingMode, $need, $status);
 
 // Set status to Pending by default
 $status = "Pending";

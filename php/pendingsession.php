@@ -130,103 +130,110 @@ $stmt->bind_param("i", $studentID);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Check if the query was successful
+
+
 if ($result) {
+  if (mysqli_num_rows($result) > 0) {
     // Loop through the result set and display the data
     while ($row = mysqli_fetch_assoc($result)) {
-        $sessionID = $row['sessionID'];
+      $sessionID = $row['sessionID'];
 
-        echo "<div class='col-md-12 mb-3' style = 'margin-left:0px; width:100% !important;'>";
-        echo "<div class='card shadow custom-card' style='height: 200px; margin-top: 1%;'>";
-        echo "<div class='card-body'>";
-
-        echo "<h4 class = 'tutorName'> " . $row['tutorFullName'] . "</h4>";
-        echo "<p class='mode'>" . "<img src = 'icons/mode.png' class = 'iconmode'/>"  . $row['teachingMode'] . "  ". "<strong>|</strong>" . "  ". $row["formattedSessionDate"] .  "  ". "<strong>|</strong>" . "  " .   $row["formattedStartTime"] ." - ".   $row["formattedEndTime"] ."</p>";
-        echo "<p class='subj'> " . "<img src = 'icons/subj.png' class = 'iconsubj'/>"  . $row['subject'] . "</p>";
-        
-        echo "<p class = 'bio'>Status: <br>" . $row['status'] . "</p>";
-
-        echo "<p class= 'rate'>Total Cost: ₱" . number_format($row['duration'] * $row['ratePerHour'], 2) . "</p>";
-
-        
-        echo "<button class='btn btn-outline-custom1' data-toggle='modal' data-target='#detailsModal_$sessionID'>View Details</button>";
-
-        
-       
-
-        echo "</div>";
-        echo "</div>";
-        echo "</div>";
-
-
-       
-        echo "
-
-    
-        <div class='modal fade' id='detailsModal_$sessionID' tabindex='-1' role='dialog' aria-hidden='true'>
-          <div class='modal-dialog modal-dialog-centered' role='document'>
-            <div class='modal-content'>
-              <div class='modal-header'>
-                <h5 class='modal-title' id='detailsModalLabel'></h5>
-                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                  <span aria-hidden='true'>&times;</span>
-                </button>
-              </div>
-              <div class='modal-body'>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start;'>" . $row['tutorFullName'] . "</p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                      <div>". "Teaching Mode: " . $row['teachingMode'] . "</div>
-                        
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <p style='font-size: 15px; display: flex; justify-content: start;'>Subject: " . $row['subject'] . "</p>
-                        
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                        <div>". "Date:" . $row['formattedSessionDate'] . "</div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                      <div>". "Time: " . $row['formattedStartTime'] . " - ". $row['formattedEndTime']. "</div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                        <p style='font-size: 15px; display: flex; justify-content: start;'>Your Note: " . $row['need'] . "</p>
-                      </td>
-                    </tr>
-                  
+      echo "<div class='col-md-12 mb-3' style = 'margin-left:0px; width:100% !important;'>";
+      echo "<div class='card shadow custom-card' style='height: 200px; margin-top: 1%;'>";
+      echo "<div class='card-body'>";
   
-
-                  </tbody>
-                </table>
+      echo "<h4 class = 'tutorName'> " . $row['tutorFullName'] . "</h4>";
+      echo "<p class='mode'>" . "<img src = 'icons/mode.png' class = 'iconmode'/>" . $row['teachingMode'] . "  " . "<strong>|</strong>" . "  " . $row["formattedSessionDate"] . "  " . "<strong>|</strong>" . "  " . $row["formattedStartTime"] . " - " . $row["formattedEndTime"] . "</p>";
+      echo "<p class='subj'> " . "<img src = 'icons/subj.png' class = 'iconsubj'/>" . $row['subject'] . "</p>";
+  
+      echo "<p class = 'bio'>Status: <br>" . $row['status'] . "</p>";
+  
+      echo "<p class= 'rate'>Total Cost: ₱" . number_format($row['duration'] * $row['ratePerHour'], 2) . "</p>";
+  
+  
+      echo "<button class='btn btn-outline-custom1' data-toggle='modal' data-target='#detailsModal_$sessionID'>View Details</button>";
+  
+      
+  
+  
+  
+      echo "</div>";
+      echo "</div>";
+      echo "</div>";
+  
+  
+  
+      echo "
+  
+      
+          <div class='modal fade' id='detailsModal_$sessionID' tabindex='-1' role='dialog' aria-hidden='true'>
+            <div class='modal-dialog modal-dialog-centered' role='document'>
+              <div class='modal-content'>
+                <div class='modal-header'>
+                  <h5 class='modal-title' id='detailsModalLabel'></h5>
+                  <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                  </button>
+                </div>
+                <div class='modal-body'>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start;'>" . $row['tutorFullName'] . "</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                        <div>" . "Teaching Mode: " . $row['teachingMode'] . "</div>
+                          
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <p style='font-size: 15px; display: flex; justify-content: start;'>Subject: " . $row['subject'] . "</p>
+                          
+                        </td>
+                      </tr>
+  
+                      <tr>
+                        <td>
+                          <div>" . "Date:" . $row['formattedSessionDate'] . "</div>
+                        </td>
+                      </tr>
+  
+                      <tr>
+                        <td>
+                        <div>" . "Time: " . $row['formattedStartTime'] . " - " . $row['formattedEndTime'] . "</div>
+                        </td>
+                      </tr>
+  
+                      <tr>
+                        <td>
+                          <p style='font-size: 15px; display: flex; justify-content: start;'>Your Note: " . $row['need'] . "</p>
+                        </td>
+                      </tr>
+                    
+    
+  
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-  ";
-
+    ";
+  
     }
+  } else {
+    // No pending requests
+    echo "<p>No pending request</p>";
+  }
 } else {
-    echo "Error: " . mysqli_error($conn);
+  // Error in executing the query
+  echo "Error: " . mysqli_error($conn);
 }
 
 // Close connection
 mysqli_close($conn);
 ?>
-

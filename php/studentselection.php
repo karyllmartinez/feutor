@@ -335,7 +335,7 @@ $result = $stmt->get_result();
 
 // Check if the prepare statement was successful
 if (!$stmt) {
-    die("Prepare failed: " . htmlspecialchars($conn->error));
+  die("Prepare failed: " . htmlspecialchars($conn->error));
 }
 
 $stmt->bind_param("i", $tutorID);
@@ -343,115 +343,120 @@ $stmt->execute();
 
 // Check if the execute statement was successful
 if ($stmt->error) {
-    die("Execute failed: " . htmlspecialchars($stmt->error));
+  die("Execute failed: " . htmlspecialchars($stmt->error));
 }
 
 $result = $stmt->get_result();
 
 // Check if the query was successful
 if ($result) {
+  // Check if there are any results
+  if (mysqli_num_rows($result) > 0) {
     // Loop through the result set and display the data
     while ($row = mysqli_fetch_assoc($result)) {
-        $sessionID = $row['sessionID'];
-        echo "<div class='col-md-12 mb-3' style = 'margin-left:0px; width:100% !important;'>";
-        echo "<div class='card shadow custom-card' style='height: 200px; margin-top: 1%;'>";
-        echo "<div class='card-body'>";
-        // Display tutor information
-        echo "<h4 class='tutorName'>" . $row['studentFullName']  ."</h4>";
-        echo "<p class='card-text'><img src='icons/default.png' alt='Profile Picture' class='profile-picture'></p>";
-        echo "<p class='degreeProgram'>" . "<img src = 'icons/grad.png' class = 'icongrad'/>" . $row["degreeProgram"] . " - " . $row['year'] ."</p>";
-        echo "<p class='mode'>" . "<img src = 'icons/mode.png' class = 'iconmode'/>"  . $row['teachingMode'] . "  ". "<strong>|</strong>" . "  ". $row["formattedSessionDate"] .  "  ". "<strong>|</strong>" . "  " .   $row["formattedStartTime"] ." - ".   $row["formattedEndTime"] ."</p>";
-        echo "<p class='subj'> " . "<img src = 'icons/subj.png' class = 'iconsubj'/>"  . $row['subject'] . "</p>";
-        echo "<p class='bio'>" . substr($row['need'], 0, 155) . (strlen($row['need']) > 75 ? '...' : '') . "</p>";
+      $sessionID = $row['sessionID'];
+      echo "<div class='col-md-12 mb-3' style = 'margin-left:0px; width:100% !important;'>";
+      echo "<div class='card shadow custom-card' style='height: 200px; margin-top: 1%;'>";
+      echo "<div class='card-body'>";
+      // Display tutor information
+      echo "<h4 class='tutorName'>" . $row['studentFullName'] . "</h4>";
+      echo "<p class='card-text'><img src='icons/default.png' alt='Profile Picture' class='profile-picture'></p>";
+      echo "<p class='degreeProgram'>" . "<img src = 'icons/grad.png' class = 'icongrad'/>" . $row["degreeProgram"] . " - " . $row['year'] . "</p>";
+      echo "<p class='mode'>" . "<img src = 'icons/mode.png' class = 'iconmode'/>" . $row['teachingMode'] . "  " . "<strong>|</strong>" . "  " . $row["formattedSessionDate"] . "  " . "<strong>|</strong>" . "  " . $row["formattedStartTime"] . " - " . $row["formattedEndTime"] . "</p>";
+      echo "<p class='subj'> " . "<img src = 'icons/subj.png' class = 'iconsubj'/>" . $row['subject'] . "</p>";
+      echo "<p class='bio'>" . substr($row['need'], 0, 155) . (strlen($row['need']) > 75 ? '...' : '') . "</p>";
 
-        // Calculate total cost
-        $totalCost = $row['duration'] * $row['ratePerHour'];
+      // Calculate total cost
+      $totalCost = $row['duration'] * $row['ratePerHour'];
 
-        // Check if duration has a decimal value
-        if ((float)$row['duration'] == (int)$row['duration']) {
-            // Display duration without decimal value
-            echo "<p class='duration'>" . (int)$row['duration'] . "hrs". " = ₱" . number_format($totalCost, 2) . "</p>";
-        } else {
-            // Display duration with decimal value
-            echo "<p class='duration'>" . $row['duration'] . "hrs</p>";
-        }
+      // Check if duration has a decimal value
+      if ((float) $row['duration'] == (int) $row['duration']) {
+        // Determine the correct label (hr or hrs)
+        $durationLabel = ((int) $row['duration'] === 1) ? 'hr' : 'hrs';
+        // Display duration without decimal value
+        echo "<p class='duration'>" . (int) $row['duration'] . $durationLabel . " = ₱" . number_format($totalCost, 2) . "</p>";
+      } else {
+        // Determine the correct label (hr or hrs) for decimal values
+        $durationLabel = ($row['duration'] == 1.0) ? 'hr' : 'hrs';
+        // Display duration with decimal value
+        echo "<p class='duration'>" . $row['duration'] . $durationLabel . "</p>";
+      }
 
-        echo "
-    <div>
-        <button type='button' class='btn btn-view-details' data-toggle='modal' data-target='#detailsModal{$sessionID}'>
-            View More Details
-        </button>
-        <button type='button' class='btn btn-view-message' onclick=\"window.open('https://teams.microsoft.com/l/chat/0/0?users=" . urlencode($row['email']) . "', '_blank')\" style='margin-top: 10px;'>
-            Message
-        </button>
-    </div>";
-    
+      echo "
+      <div>
+          <button type='button' class='btn btn-view-details' data-toggle='modal' data-target='#detailsModal{$sessionID}'>
+              View More Details
+          </button>
+          <button type='button' class='btn btn-view-message' onclick=\"window.open('https://teams.microsoft.com/l/chat/0/0?users=" . urlencode($row['email']) . "', '_blank')\" style='margin-top: 10px;'>
+              Message
+          </button>
+      </div>";
 
-        
+      echo "</div>";
+      echo "</div>";
+      echo "</div>";
 
-        
-        echo "</div>";
-        echo "</div>";
-        echo "</div>";
-        
-        echo "
-        <div class='modal fade' id='detailsModal{$sessionID}' tabindex='-1' role='dialog' aria-labelledby='detailsModalLabel{$sessionID}' aria-hidden='true'>
-          <div class='modal-dialog modal-dialog-centered' role='document'>
-            <div class='modal-content'>
-              <div class='modal-header'>
-                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                  <span aria-hidden='true'>&times;</span>
-                </button>
-              </div>
-              <div class='modal-body'>
-                <div class='container'>
-                  <div class='profile-picture-container'>
-                    <img src='icons/default.png' alt='Profile Picture' class='profile-picturemod'>
-                  </div>
-                  <p class='studentName'>" . htmlspecialchars($row['studentFullName']) . "</p>
-                  <p class='degreeProgrammod'>" . htmlspecialchars($row['degreeProgram']) . " - " . htmlspecialchars($row['year']) . "</p>
-                  <p class='modemod'>" . "<img src='icons/mode.png' class='iconmodemodal'/>" . htmlspecialchars($row['teachingMode']) . "</p>
-                  <p class='subjmod'>" . "<img src='icons/subj.png' class='iconsubjmodal'/>" . htmlspecialchars($row['subject']) . "</p>
-                  <p class='timemod'>" . "<img src='icons/time.png' class='icontimemodal'/>" . htmlspecialchars($row["formattedSessionDate"]) . " <strong>|</strong> " . htmlspecialchars($row["formattedStartTime"]) . " - " . htmlspecialchars($row["formattedEndTime"]) . " <strong>|</strong> " . (int)$row['duration'] . "hrs" . "</p>
-                  <p class='need'>Need: <br/> " . htmlspecialchars($row['need']) . "</p>
-                  <p class='status'>Status: " . htmlspecialchars($row['status']) . "</p>";
+      echo "
+          <div class='modal fade' id='detailsModal{$sessionID}' tabindex='-1' role='dialog' aria-labelledby='detailsModalLabel{$sessionID}' aria-hidden='true'>
+            <div class='modal-dialog modal-dialog-centered' role='document'>
+              <div class='modal-content'>
+                <div class='modal-header'>
+                  <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                  </button>
+                </div>
+                <div class='modal-body'>
+                  <div class='container'>
+                    <div class='profile-picture-container'>
+                      <img src='icons/default.png' alt='Profile Picture' class='profile-picturemod'>
+                    </div>
+                    <p class='studentName'>" . htmlspecialchars($row['studentFullName']) . "</p>
+                    <p class='degreeProgrammod'>" . htmlspecialchars($row['degreeProgram']) . " - " . htmlspecialchars($row['year']) . "</p>
+                    <p class='modemod'>" . "<img src='icons/mode.png' class='iconmodemodal'/>" . htmlspecialchars($row['teachingMode']) . "</p>
+                    <p class='subjmod'>" . "<img src='icons/subj.png' class='iconsubjmodal'/>" . htmlspecialchars($row['subject']) . "</p>
+                    <p class='timemod'>" . "<img src='icons/time.png' class='icontimemodal'/>" . htmlspecialchars($row["formattedSessionDate"]) . " <strong>|</strong> " . htmlspecialchars($row["formattedStartTime"]) . " - " . htmlspecialchars($row["formattedEndTime"]) . " <strong>|</strong> " . (int) $row['duration'] . "hrs" . "</p>
+                    <p class='need'>Need: <br/> " . htmlspecialchars($row['need']) . "</p>
+                    <p class='status'>Status: " . htmlspecialchars($row['status']) . "</p>";
 
-                   // Check if duration has a decimal value
-          if ((float)$row['duration'] == (int)$row['duration']) {
-              // Display total price without decimal value
-              echo "<p class='durationmod'>Total Price: ₱" . number_format($totalCost, 2) . "</p>";
-          } else {
-              // Display duration with decimal value
-              echo "<p class='durationmod'>" . htmlspecialchars($row['duration']) . " hrs</p>";
-          }
+      // Check if duration has a decimal value
+      if ((float) $row['duration'] == (int) $row['duration']) {
+        // Display total price without decimal value
+        echo "<p class='durationmod'>Total Price: ₱" . number_format($totalCost, 2) . "</p>";
+      } else {
+        // Display duration with decimal value
+        echo "<p class='durationmod'>" . htmlspecialchars($row['duration']) . " hrs</p>";
+      }
 
-
-
-              echo "
-                  </div>
-              </div>
-              <div class='modal-footer'> <!-- Modal footer -->
-                <div class='buttons-container'>
-                  <div class='button-container1'>
-                    <a href='php/acceptsession.php?sessionID=" . htmlspecialchars($sessionID) . "'>
-                      <button class='btn btn-outline-success'>Accept & Ask for Payment</button>
-                    </a>
-                  </div>
-                  <div class='button-container2'>
-                    <a href='php/declinedsession.php?sessionID=" . htmlspecialchars($sessionID) . "'>
-                      <button class='btn btn-outline-danger'>Decline</button>
-                    </a>
+      echo "
+                </div>
+                </div>
+                <div class='modal-footer'> <!-- Modal footer -->
+                  <div class='buttons-container'>
+                    <div class='button-container1'>
+                      <a href='php/acceptsession.php?sessionID=" . htmlspecialchars($sessionID) . "'>
+                        <button class='btn btn-outline-success'>Accept & Ask for Payment</button>
+                      </a>
+                    </div>
+                    <div class='button-container2'>
+                      <a href='php/declinedsession.php?sessionID=" . htmlspecialchars($sessionID) . "'>
+                        <button class='btn btn-outline-danger'>Decline</button>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        ";       
+          ";
     }
+  } else {
+    // If there are no pending sessions, display a message
+    echo "<p>No pending sessions for now.</p>";
+  }
 } else {
-    echo "Error: " . mysqli_error($conn);
+  echo "Error: " . mysqli_error($conn);
 }
+
 
 // Close connection
 mysqli_close($conn);

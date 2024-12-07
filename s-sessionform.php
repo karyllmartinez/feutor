@@ -157,11 +157,6 @@ include('php/tutorname.php'); // Include your database connection file
                 <?php } ?>
               </div>
 
-              <!-- <div class="mb-3">
-                            <label for="sessionDate">Select Date:</label>
-                            <input type="date" class="form-control" id="sessionDate" name="sessionDate">
-                        </div> -->
-
               <div class="mb-3">
                 <label for="sessionDate">Select Date:</label>
                 <input type="date" class="form-control" id="sessionDate" name="sessionDate" required>
@@ -169,17 +164,18 @@ include('php/tutorname.php'); // Include your database connection file
 
 
               <div class="mb-3">
-                <label for="startTime">Start Time:</label>
-                <input type="time" class="form-control" id="startTime" name="startTime" onchange="calculateDuration()">
-              </div>
-              <div class="mb-3">
-                <label for="endTime">End Time:</label>
-                <input type="time" class="form-control" id="endTime" name="endTime" onchange="calculateDuration()">
-              </div>
-              <div class="mb-3">
-                <label for="duration">Duration (hours):</label>
-                <input type="number" class="form-control" id="duration" name="duration" readonly>
-              </div>
+    <label for="startTime">Start Time:</label>
+    <input type="time" class="form-control" id="startTime" name="startTime" onchange="calculateDuration()" required>
+</div>
+<div class="mb-3">
+    <label for="endTime">End Time:</label>
+    <input type="time" class="form-control" id="endTime" name="endTime" onchange="calculateDuration()" required>
+</div>
+
+<div class="mb-3">
+    <label for="duration">Duration (hours):</label>
+    <input type="text" class="form-control" id="duration" name="duration" readonly>
+</div>
               <div class="mb-3">
                 <label for="need">What do you need?</label>
                 <textarea class="form-control" id="need" name="need" rows="4"></textarea>

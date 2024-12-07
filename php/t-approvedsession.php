@@ -157,7 +157,7 @@ $result = $stmt->get_result();
 
 // Check if the prepare statement was successful
 if (!$stmt) {
-    die("Prepare failed: " . htmlspecialchars($conn->error));
+  die("Prepare failed: " . htmlspecialchars($conn->error));
 }
 
 $stmt->bind_param("i", $tutorID);
@@ -165,124 +165,121 @@ $stmt->execute();
 
 // Check if the execute statement was successful
 if ($stmt->error) {
-    die("Execute failed: " . htmlspecialchars($stmt->error));
+  die("Execute failed: " . htmlspecialchars($stmt->error));
 }
 
 $result = $stmt->get_result();
 
 // Check if the query was successful
 if ($result) {
+  // Check if there are no sessions in the result
+  if (mysqli_num_rows($result) == 0) {
+    echo "<p>No approved sessions for now.</p>";
+  } else {
     // Loop through the result set and display the data
     while ($row = mysqli_fetch_assoc($result)) {
-        $sessionID = $row['sessionID'];
-    
+      $sessionID = $row['sessionID'];
 
-        // Inside the loop where you display session details:
-echo "<div class='col-md-12 mb-3' style = 'margin-left:0px; width:100% !important;'>";
-echo "<div class='card shadow custom-card' style='height: 200px; margin-top: 1%;'>";
-echo "<div class='card-body'>";
+      // Inside the loop where you display session details:
+      echo "<div class='col-md-12 mb-3' style = 'margin-left:0px; width:100% !important;'>";
+      echo "<div class='card shadow custom-card' style='height: 200px; margin-top: 1%;'>";
+      echo "<div class='card-body'>";
 
-echo "<h4 class='tutorName'>" . $row['studentFullName']  ."</h4>";
-echo "<p class='mode'>" . "<img src = 'icons/mode.png' class = 'iconmode'/>"  . $row['teachingMode'] . "  ". "<strong>|</strong>" . "  ". $row["formattedSessionDate"] .  "  ". "<strong>|</strong>" . "  " .   $row["formattedStartTime"] ." - ".   $row["formattedEndTime"] ."</p>";
-echo "<p class='subj'> " . "<img src = 'icons/subj.png' class = 'iconsubj'/>"  . $row['subject'] . "</p>";
-echo "<p class = 'bio'>Status: <br>" . $row['status'] . "</p>";
-echo "<p class= 'rate'>Total Cost: ₱" . number_format($row['duration'] * $row['ratePerHour'], 2) . "</p>";
+      echo "<h4 class='tutorName'>" . $row['studentFullName'] . "</h4>";
+      echo "<p class='mode'>" . "<img src = 'icons/mode.png' class = 'iconmode'/>" . $row['teachingMode'] . "  " . "<strong>|</strong>" . "  " . $row["formattedSessionDate"] . "  " . "<strong>|</strong>" . "  " . $row["formattedStartTime"] . " - " . $row["formattedEndTime"] . "</p>";
+      echo "<p class='subj'> " . "<img src = 'icons/subj.png' class = 'iconsubj'/>" . $row['subject'] . "</p>";
+      echo "<p class = 'bio'>Status: <br>" . $row['status'] . "</p>";
+      echo "<p class= 'rate'>Total Cost: ₱" . number_format($row['duration'] * $row['ratePerHour'], 2) . "</p>";
 
-echo "<button class='btn btn-outline-custom1' data-toggle='modal' data-target='#detailsModal_$sessionID'>View Details</button>";
+      echo "<button class='btn btn-outline-custom1' data-toggle='modal' data-target='#detailsModal_$sessionID'>View Details</button>";
 
-if ($row['status'] == 'Paid') {
-    echo "<a href='php/finishedsession.php?sessionID=" . $sessionID . "'>
-            <button class='btn btn-outline-custom2'>Mark as Finished</button>
-          </a><br><br>";
-} else if ($row['status'] == 'Waiting for Payment') {
-    echo "<a href='php/declinedsession.php?sessionID=" . $sessionID . "'>
-            <button class='btn btn-outline-custom2'>Decline</button>
-          </a><br><br>";
-}
+      if ($row['status'] == 'Paid') {
+        echo "<a href='php/finishedsession.php?sessionID=" . $sessionID . "'>
+              <button class='btn btn-outline-custom2'>Mark as Finished</button>
+            </a><br><br>";
+      } else if ($row['status'] == 'Waiting for Payment') {
+        echo "<a href='php/declinedsession.php?sessionID=" . $sessionID . "'>
+              <button class='btn btn-outline-custom2'>Decline</button>
+            </a><br><br>";
+      }
 
-// Message button
-$studentEmail = $row['studentEmail'];  // Get the student's email
+      // Message button
+      $studentEmail = $row['studentEmail'];  // Get the student's email
 
-$teamsUrl = "https://teams.microsoft.com/l/chat/0/0?users=" . urlencode($studentEmail);
+      $teamsUrl = "https://teams.microsoft.com/l/chat/0/0?users=" . urlencode($studentEmail);
 
-echo "
-    <a href='$teamsUrl' target='_blank'>
-        <button class='btn btn-outline-custom3' style='margin-top: 10px;'>Message</button>
-    </a>
-";
+      echo "
+      <a href='$teamsUrl' target='_blank'>
+          <button class='btn btn-outline-custom3' style='margin-top: 10px;'>Message</button>
+      </a>
+    ";
 
-echo "</div>";
-echo "</div>";
-echo "</div>";
+      echo "</div>";
+      echo "</div>";
+      echo "</div>";
 
+      echo "
+          <div class='modal fade' id='detailsModal_$sessionID' tabindex='-1' role='dialog' aria-hidden='true'>
+            <div class='modal-dialog modal-dialog-centered' role='document'>
+              <div class='modal-content'>
+                <div class='modal-header'>
+                  <h5 class='modal-title' id='detailsModalLabel'></h5>
+                  <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                  </button>
+                </div>
+                <div class='modal-body'>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>" . $row['studentFullName'] . "</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                        <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>" . "Teaching Mode: " . $row['teachingMode'] . "</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>Subject: " . $row['subject'] . "</p>
+                        </td>
+                      </tr>
 
+                      <tr>
+                        <td>
+                          <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>" . "Date:" . $row['formattedSessionDate'] . "</p>
+                        </td>
+                      </tr>
 
-        echo "
+                      <tr>
+                        <td>
+                        <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>" . "Time: " . $row['formattedStartTime'] . " - " . $row['formattedEndTime'] . "</p>
+                        </td>
+                      </tr>
 
-    
-        <div class='modal fade' id='detailsModal_$sessionID' tabindex='-1' role='dialog' aria-hidden='true'>
-          <div class='modal-dialog modal-dialog-centered' role='document'>
-            <div class='modal-content'>
-              <div class='modal-header'>
-                <h5 class='modal-title' id='detailsModalLabel'></h5>
-                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                  <span aria-hidden='true'>&times;</span>
-                </button>
-              </div>
-              <div class='modal-body'>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>" . $row['studentFullName'] . "</p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                      <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>". "Teaching Mode: " . $row['teachingMode'] . "</p>
-                        
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>Subject: " . $row['subject'] . "</p>
-                        
-                      </td>
-                    </tr>
+                      <tr>
+                        <td>
+                          <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>Note: " . $row['need'] . "</p>
+                        </td>
+                      </tr>
 
-                    <tr>
-                      <td>
-                        <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>". "Date:" . $row['formattedSessionDate'] . "</p>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                      <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>". "Time: " . $row['formattedStartTime'] . " - ". $row['formattedEndTime']. "</p>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                        <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>Note: " . $row['need'] . "</p>
-                      </td>
-                    </tr>
-                  
-  
-
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-  ";
-    } 
+      ";
+    }
+  }
 } else {
-    echo "Error: " . mysqli_error($conn);
+  // Error handling in case of failed query
+  echo "Error: " . mysqli_error($conn);
 }
+
 
 // Close connection
 mysqli_close($conn);
 ?>
-

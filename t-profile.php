@@ -291,6 +291,9 @@ if ($availabilityResult->num_rows > 0) {
 
 
 
+
+
+
   <div id="editModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="document.getElementById('editModal').style.display='none';">&times;</span>
