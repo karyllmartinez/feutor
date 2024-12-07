@@ -49,9 +49,7 @@ include('php/approvalStatus.php');
               <a class="dropdown-item" href="#">Finished</a>
            </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Messages</a>
-          </li>
+         
           
          
 

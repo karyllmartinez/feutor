@@ -54,9 +54,7 @@ $student = $result->fetch_assoc();
                             <a class="dropdown-item" href="s-finished.php">Finished</a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Messages</a>
-                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="#">Notifications</a>
                     </li>

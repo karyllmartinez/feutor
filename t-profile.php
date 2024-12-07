@@ -125,9 +125,7 @@ if ($availabilityResult->num_rows > 0) {
               <a class="dropdown-item" href="t-finished.php">Finished</a>
             </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Messages</a>
-          </li>
+          
           <li class="nav-item">
             <a class="nav-link" href="#">Notifications</a>
           </li>
