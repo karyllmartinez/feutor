@@ -19,8 +19,7 @@ if ($result->num_rows > 0) {
   $message = "No data found for the tutor.";
 }
 
-// Check if profile picture exists and if not, use a default image
-$profilePicture = !empty($profilePicture) ? $profilePicture : 'icons/default.png';
+$profilePicture = !empty($tutorData['profilePicture']) ? $tutorData['profilePicture'] : 'icons/default.png';
 
 // Query to fetch tutor availability
 $availabilityQuery = "SELECT id, tutor_id, day_of_week, start_time, end_time FROM tutorAvailability WHERE tutor_id = ?";

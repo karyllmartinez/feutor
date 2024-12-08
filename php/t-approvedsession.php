@@ -126,6 +126,81 @@ echo "<style type='text/css'>
   font-weight: 300px;
 
 }
+
+/* Modal Styles */
+.custom-modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Overlay */
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 80%;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.custom-modal-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.custom-modal-close {
+  background: none;
+  border: none;
+  font-size: 25px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+.custom-modal-body {
+  padding: 15px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.custom-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.custom-modal-footer .btn {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.custom-modal-footer .btn:hover {
+  background-color: #0056b3;
+}
+
+.custom-modal.show {
+  display: flex;
+}
+
+
+
 </style>";
 
 // Retrieve logged-in tutor's tutorID
@@ -193,15 +268,49 @@ if ($result) {
 
       echo "<button class='btn btn-outline-custom1' data-toggle='modal' data-target='#detailsModal_$sessionID'>View Details</button>";
 
+      
       if ($row['status'] == 'Paid') {
-        echo "<a href='php/finishedsession.php?sessionID=" . $sessionID . "'>
-              <button class='btn btn-outline-custom2'>Mark as Finished</button>
-            </a><br><br>";
-      } else if ($row['status'] == 'Waiting for Payment') {
+        // Get the session date and today's date
+        $sessionDate = $row['formattedSessionDate'];  // Use 'formattedSessionDate' from the SQL query
+        $todayDate = date('M d, Y');  // Today's date in the same format
+        $nextDay = new DateTime();
+        $nextDay->modify('+1 day');  // Get tomorrow's date
+        
+        // Convert session date and today's date to DateTime objects for comparison
+        $sessionDateObj = DateTime::createFromFormat('M d, Y', $sessionDate);
+        $todayDateObj = new DateTime($todayDate);
+        
+        // Check if DateTime objects were created correctly
+        if ($sessionDateObj === false || $todayDateObj === false) {
+            echo "<p class='text-danger'>Error in date conversion.</p><br><br>";
+        } else {
+            // Compare the session date with today's date and the next day
+            if ($sessionDateObj < $todayDateObj) {
+                // Session date is in the past, allow marking as finished
+                echo "<a href='php/finishedsession.php?sessionID=" . $sessionID . "'>
+                        <button class='btn btn-outline-custom2'>Mark as Finished</button>
+                      </a><br><br>";
+            } elseif (($sessionDateObj >= $todayDateObj) && ($sessionDateObj <= $nextDay)) {
+                // Session date is today or tomorrow, so allow marking as finished
+                echo "<a href='php/finishedsession.php?sessionID=" . $sessionID . "'>
+                        <button class='btn btn-outline-custom2'>Mark as Finished</button>
+                      </a><br><br>";
+            } else {
+                // Session date is more than one day in the future, show button but trigger modal
+                echo "<button class='btn btn-outline-custom2' id='openFinishModalBtn'>
+                        Mark as Finished
+                      </button><br><br>";
+            }
+        }
+    } else if ($row['status'] == 'Waiting for Payment') {
         echo "<a href='php/declinedsession.php?sessionID=" . $sessionID . "'>
-              <button class='btn btn-outline-custom2'>Decline</button>
-            </a><br><br>";
-      }
+                <button class='btn btn-outline-custom2'>Decline</button>
+              </a><br><br>";
+    }
+    
+    
+      
+    
 
       // Message button
       $studentEmail = $row['studentEmail'];  // Get the student's email
@@ -229,44 +338,46 @@ if ($result) {
                   </button>
                 </div>
                 <div class='modal-body'>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>" . $row['studentFullName'] . "</p>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                        <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>" . "Teaching Mode: " . $row['teachingMode'] . "</p>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>Subject: " . $row['subject'] . "</p>
-                        </td>
-                      </tr>
+                  <table style='width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>
+  <thead>
+    <tr>
+      <td colspan='2' style='background-color: #28a745; color: #ffffff; text-align: center; padding: 15px; font-size: 18px; font-weight: bold;'>Student Details</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style='padding: 15px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;'>
+        <p style='font-weight: bold; font-size: 16px; color: #0F422A; margin: 0;'>" . $row['studentFullName'] . "</p>
+      </td>
+    </tr>
+    <tr>
+      <td style='padding: 10px; background-color: #ffffff; border-bottom: 1px solid #ddd;'>
+        <p style='font-weight: bold; font-size: 15px; color: #0F422A; margin: 0;'>Teaching Mode: <span style='font-weight: bold; color: #28a745;'>" . $row['teachingMode'] . "</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td style='padding: 10px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;'>
+        <p style='font-weight: bold; font-size: 15px; color: #0F422A; margin: 0;'>Subject: <span style='font-weight: bold; color: #28a745;'>" . $row['subject'] . "</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td style='padding: 10px; background-color: #ffffff; border-bottom: 1px solid #ddd;'>
+        <p style='font-weight: bold; font-size: 15px; color: #0F422A; margin: 0;'>Date: <span style='font-weight: bold; color: #28a745;'>" . $row['formattedSessionDate'] . "</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td style='padding: 10px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;'>
+        <p style='font-weight: bold; font-size: 15px; color: #0F422A; margin: 0;'>Time: <span style='font-weight: bold; color: #28a745;'>" . $row['formattedStartTime'] . " - " . $row['formattedEndTime'] . "</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td style='padding: 10px; background-color: #ffffff;'>
+        <p style='font-weight: bold; font-size: 15px; color: #0F422A; margin: 0;'>Note: <span style='font-weight: bold; color: #28a745;'>" . $row['need'] . "</span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-                      <tr>
-                        <td>
-                          <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>" . "Date:" . $row['formattedSessionDate'] . "</p>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                        <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>" . "Time: " . $row['formattedStartTime'] . " - " . $row['formattedEndTime'] . "</p>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start; margin: 0; color: #0F422A'>Note: " . $row['need'] . "</p>
-                        </td>
-                      </tr>
-
-                    </tbody>
-                  </table>
                 </div>
               </div>
             </div>
@@ -283,3 +394,38 @@ if ($result) {
 // Close connection
 mysqli_close($conn);
 ?>
+
+
+<div class="custom-modal" id="finishModal">
+    <div class="custom-modal-content">
+        <div class="custom-modal-header">
+            <h5 class="custom-modal-title">Session Finished</h5>
+            <button class="custom-modal-close" id="closeFinishModalBtn">×</button>
+        </div>
+        <div class="custom-modal-body">
+            You can only mark sessions as finished <strong>on the day of</strong> or <strong>the next day</strong> after the session date.
+        </div>
+        <div class="custom-modal-footer">
+    <button class="btn btn-secondary" id="closeFinishModalBtn" style="display: none;">Close</button>
+</div>
+
+    </div>
+</div>
+
+<script>
+    // Only bind the modal trigger if the session is in the future
+    document.getElementById('openFinishModalBtn')?.addEventListener('click', function() {
+        document.getElementById('finishModal').classList.add('show');
+    });
+
+    document.getElementById('closeFinishModalBtn').addEventListener('click', function() {
+        document.getElementById('finishModal').classList.remove('show');
+    });
+
+    // Optional: Close modal if the overlay (background) is clicked
+    document.querySelector('.custom-modal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            document.getElementById('finishModal').classList.remove('show');
+        }
+    });
+</script>

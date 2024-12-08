@@ -89,7 +89,7 @@ echo "<style type='text/css'>
         letter-spacing: 0.05em;
         bottom:35%;
        left:80%;
-       width:250px;
+       width:200px;
        height:40px;
        position: absolute;
        z-index: 2;
@@ -104,7 +104,7 @@ echo "<style type='text/css'>
         letter-spacing: 0.05em;
         bottom:10%;
        left:80%;
-       width:250px;
+       width:200px;
        height:40px;
        position: absolute;
        z-index: 2;
@@ -387,6 +387,8 @@ if ($result) {
           <button type='button' class='btn btn-view-details' data-toggle='modal' data-target='#detailsModal{$sessionID}'>
               View More Details
           </button>
+
+          
           <button type='button' class='btn btn-view-message' onclick=\"window.open('https://teams.microsoft.com/l/chat/0/0?users=" . urlencode($row['email']) . "', '_blank')\" style='margin-top: 10px;'>
               Message
           </button>

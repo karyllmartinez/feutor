@@ -174,10 +174,63 @@ if ($result) {
             echo "<p class='bio'>" . substr($row['bio'], 0, 155) . (strlen($row['bio']) > 75 ? '...' : '') . "</p>";
             echo "<p class='rate'>₱" . $row['ratePerHour'] . "/hr</p>";
            // echo "<p>Available on " . $row['day_of_week'] . " from " . $row['start_time'] . " to " . $row['end_time'] . "</p>";
+           echo "<button class='btn btn-outline-secondary' data-toggle='modal' data-target='#detailsModal_$tutorID'>View Profile</button>"; // New button above
             echo "<a href='s-sessionform.php?tutor=" . urlencode($row['firstName'] . " " . $row['lastName']) . "' class='btn btn-outline-success'>Book a Session</a>";
             echo "</div>";
             echo "</div>";
             echo "</div>";
+
+
+            echo "
+            <div class='modal fade' id='detailsModal_$tutorID' tabindex='-1' role='dialog' aria-hidden='true'>
+                <div class='modal-dialog modal-dialog-centered' role='document'>
+                    <div class='modal-content'>
+                        <div class='modal-header'>
+                            
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>&times;</span>
+                            </button>
+                        </div>
+                        <div class='modal-body'>
+                            <table style='width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; color: #333;'>
+    <tbody>
+        <tr>
+            <td style='text-align: center; padding: 10px;'>
+                <img src='" . $row['profilePicture'] . "' alt='Profile Picture' style='width: 100px; height: 100px; border-radius: 50%; border: 2px solid green; object-fit: cover;'>
+            </td>
+        </tr>
+        <tr>
+            <td style='text-align: center; padding: 10px;'>
+                <p style='font-weight: bold; font-size: 18px; margin: 0;'>" . $row['firstName'] . " " . $row['lastName'] . "</p>
+            </td>
+        </tr>
+        <tr>
+            <td style='text-align: center; padding: 10px;'>
+                <p style='font-size: 14px; margin: 0;'><img src='icons/grad.png' style='width: 16px; margin-right: 5px;' />" . $row['degreeProgram'] . " - " . $row['year'] . "</p>
+            </td>
+        </tr>
+        <tr>
+            <td style='text-align: center; padding: 10px;'>
+                <p style='font-size: 14px; margin: 0;'><img src='icons/mode.png' style='width: 16px; margin-right: 5px;' />" . $row['teachingMode'] . "</p>
+            </td>
+        </tr>
+        <tr>
+            <td style='text-align: center; padding: 10px;'>
+                <p style='font-size: 14px; margin: 0;'><img src='icons/subj.png' style='width: 16px; margin-right: 5px;' />" . $row['subjectExpertise'] . "</p>
+            </td>
+        </tr>
+        <tr>
+            <td style='text-align: center; padding: 10px;'>
+                <p style='font-size: 14px; margin: 0; color: #555; text-align: justify;'>" . $row['bio'] . "</p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ";
         }
     } else {
         echo "<p>No tutors found matching your criteria.</p>";

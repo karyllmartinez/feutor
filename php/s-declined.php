@@ -185,43 +185,46 @@ if ($result) {
                   </button>
                 </div>
                 <div class='modal-body'>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <p style='font-weight: bold; font-size: 15px; display: flex; justify-content: start;'>" . $row['tutorFullName'] . "</p>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                        <div>". "Teaching Mode: " . $row['teachingMode'] . "</div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <p style='font-size: 15px; display: flex; justify-content: start;'>Subject: " . $row['subject'] . "</p>
-                        </td>
-                      </tr>
+                    <table style='width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>
+  <thead>
+    <tr>
+      <td colspan='2' style='background-color: green; color: #ffffff; text-align: center; padding: 15px; font-size: 18px; font-weight: bold;'>Tutor Details</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style='padding: 15px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;'>
+        <p style='font-weight: bold; font-size: 16px; color: #333; margin: 0;'>" . $row['tutorFullName'] . "</p>
+      </td>
+    </tr>
+    <tr>
+      <td style='padding: 10px; background-color: #ffffff; border-bottom: 1px solid #ddd;'>
+        <div style='color: #555; font-size: 14px;'>" . "Teaching Mode: <span style='font-weight: bold; color: #28a745;'>" . $row['teachingMode'] . "</span>" . "</div>
+      </td>
+    </tr>
+    <tr>
+      <td style='padding: 10px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;'>
+        <p style='font-size: 14px; color: #333; margin: 0;'>Subject: <span style='font-weight: bold; color: #28a745;'>" . $row['subject'] . "</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td style='padding: 10px; background-color: #ffffff; border-bottom: 1px solid #ddd;'>
+        <div style='color: #555; font-size: 14px;'>Date: <span style='font-weight: bold; color: #28a745;'>" . $row['formattedSessionDate'] . "</span></div>
+      </td>
+    </tr>
+    <tr>
+      <td style='padding: 10px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;'>
+        <div style='color: #555; font-size: 14px;'>Time: <span style='font-weight: bold; color: #28a745;'>" . $row['formattedStartTime'] . " - " . $row['formattedEndTime'] . "</span></div>
+      </td>
+    </tr>
+    <tr>
+      <td style='padding: 10px; background-color: #ffffff;'>
+        <p style='font-size: 14px; color: #333; margin: 0;'>Your Note: <span style='font-weight: bold; color: #28a745;'>" . $row['need'] . "</span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-                      <tr>
-                        <td>
-                          <div>". "Date:" . $row['formattedSessionDate'] . "</div>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                        <div>". "Time: " . $row['formattedStartTime'] . " - ". $row['formattedEndTime']. "</div>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          <p style='font-size: 15px; display: flex; justify-content: start;'>Your Note: " . $row['need'] . "</p>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
                 </div>
               </div>
             </div>
