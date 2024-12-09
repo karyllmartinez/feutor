@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Optionally unset temp_tutor
             unset($_SESSION['temp_tutor']);
-            header("Location: t-dashboard.php");
+            header("Location: t-index.php");
             exit();
         } else {
             echo "<script>

@@ -92,6 +92,30 @@ if ($availabilityResult->num_rows > 0) {
       text-decoration: none;
       cursor: pointer;
     }
+    
+    /* BAGO ETO */
+    .message {
+        margin: 50px auto -50px auto; /* Centers horizontally and adds margin above and below */
+        padding: 15px; /* Space inside the box */
+        max-width: 42%; /* Limits the width of the message box */
+        border: 1px solid #c3e6cb; /* Green border */
+        border-radius: 5px; /* Rounded corners */
+        text-align: center; /* Centers the text */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+    }
+
+    .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    /* HANGGANG DITO */
   </style>
 
 </head>
@@ -235,6 +259,20 @@ if ($availabilityResult->num_rows > 0) {
             </div>
         </div>
     </div> -->
+
+<!-- BAGO -->
+<?php
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    $messageType = isset($_SESSION['message_type']) ? $_SESSION['message_type'] : 'success'; // Default to success
+    echo "<div class='message $messageType'>$message</div>";
+
+    // Clear the message after displaying it
+    unset($_SESSION['message']);
+    unset($_SESSION['message_type']);
+}
+?>
+<!-- HANGGANG DITO -->
 
 
   <div
@@ -528,6 +566,20 @@ function toggleScheduleForm() {
     }
 }
 </script>
+
+<!-- BAGO -->
+<script>
+    // Hide the message after 5 seconds (for both success and error messages)
+    setTimeout(function() {
+        var messageDiv = document.querySelector('.message'); // Select the message div by class
+
+        if (messageDiv) {
+            messageDiv.style.display = 'none';
+        }
+    }, 5000);
+</script>
+<!-- HANGGANG DITO -->
+
 </body>
 
 </html>
