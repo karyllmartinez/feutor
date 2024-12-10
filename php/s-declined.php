@@ -123,15 +123,15 @@ echo "<style type='text/css'>
 $studentID = $_SESSION['auth_user']['user_id'];
 
 // Query to fetch sessions for the logged-in student
-$sql = "SELECT s.sessionID, DATE_FORMAT(s.sessionDate, '%M %e, %Y') AS formattedSessionDate, TIME_FORMAT(s.startTime, '%h:%i %p') AS formattedStartTime, TIME_FORMAT(s.endTime, '%h:%i %p') AS formattedEndTime, s.duration, s.subject, s.teachingMode, s.need, s.paymentStatus, s.status, 
+$sql = "SELECT s.sessionID, DATE_FORMAT(s.sessionDate, '%M %e, %Y') AS formattedSessionDate, TIME_FORMAT(s.startTime, '%h:%i %p') AS formattedStartTime, TIME_FORMAT(s.endTime, '%h:%i %p') AS formattedEndTime, s.duration, s.subject, s.teachingMode, s.need, s.paymentStatus, s.status, s.remarks, 
         CASE
-            WHEN s.status = 'Cancelled' THEN 'Cancelled By You'
+            WHEN s.status = 'Cancelled' OR s.status = 'Cancelled by Student' THEN 'Cancelled By You' 
             ELSE s.status
         END AS status,
         CONCAT(t.firstname, ' ', t.lastname) AS tutorFullName, t.ratePerHour, t.profilePicture
         FROM session s
         INNER JOIN tutor t ON s.tutorID = t.tutorID
-        WHERE s.studentID = ? AND (s.status = 'Cancelled' OR s.status = 'Declined')";
+        WHERE s.studentID = ? AND (s.status = 'Cancelled' OR s.status = 'Declined' OR s.status = 'Cancelled by Student')";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $studentID);
@@ -220,6 +220,11 @@ if ($result) {
     <tr>
       <td style='padding: 10px; background-color: #ffffff;'>
         <p style='font-size: 14px; color: #333; margin: 0;'>Your Note: <span style='font-weight: bold; color: #28a745;'>" . $row['need'] . "</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td style='padding: 10px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;'>
+        <p style='font-size: 14px; color: red; margin: 0;'>Reason for Cancellation: <span style='font-weight: bold; color: #28a745;'>" . $row['remarks'] . "</span></p>
       </td>
     </tr>
   </tbody>

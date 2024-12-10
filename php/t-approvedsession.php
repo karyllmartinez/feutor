@@ -200,6 +200,23 @@ echo "<style type='text/css'>
 }
 
 
+.btn-outline-custom4 {
+  color: #ffffff;
+  background-color: #D9534F; /* Red color for cancel */
+  border-color: #D9534F;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  margin-top: 20px;
+  margin-left: auto;  /* Center horizontally */
+  margin-right: auto; /* Center horizontally */
+  position: relative; /* Make sure it's inside a relative container */
+}
+
+
 
 </style>";
 
@@ -341,7 +358,7 @@ if ($result) {
                   <table style='width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>
   <thead>
     <tr>
-      <td colspan='2' style='background-color: #28a745; color: #ffffff; text-align: center; padding: 15px; font-size: 18px; font-weight: bold;'>Student Details</td>
+      <td colspan='2' style='background-color: #28a745; color: #ffffff; text-align: center; padding: 15px; font-size: 18px; font-weight: bold;'>Approved Session Details</td>
     </tr>
   </thead>
   <tbody>
@@ -378,11 +395,47 @@ if ($result) {
   </tbody>
 </table>
 
+
+<button class='btn btn-outline-custom4' data-toggle='modal' data-target='#cancelModal_" . $sessionID . "'>Cancel Session</button>
+
+
+
                 </div>
               </div>
             </div>
           </div>
       ";
+
+
+   
+
+
+      echo "<div class='modal fade' id='cancelModal_" . $sessionID . "' tabindex='-1' role='dialog' aria-labelledby='cancelModalLabel_" . $sessionID . "' aria-hidden='true'>
+      <div class='modal-dialog' role='document' style='max-width: 600px;'>
+        <div class='modal-content' style='border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);'>
+          <div class='modal-header' style='background-color: #f8d7da; border-bottom: 1px solid #f5c6cb;'>
+            <h5 class='modal-title' id='cancelModalLabel_" . $sessionID . "' style='color: #721c24;'>Reason for Cancellation</h5>
+            <button type='button' class='close' data-dismiss='modal' aria-label='Close' style='color: #721c24;'>
+              <span aria-hidden='true'>&times;</span>
+            </button>
+          </div>
+          <div class='modal-body'>
+            <form action='php/tutorcancel_session.php?sessionID=" . $sessionID . "' method='POST'>
+              <input type='hidden' name='sessionID' value='" . $sessionID . "'>
+              <div class='form-group'>
+              
+                <textarea class='form-control' id='cancelReason' name='cancelReason' rows='3' required style='resize: none;'></textarea>
+              </div>
+              <button type='submit' class='btn btn-danger' style='background-color: #dc3545; border: none;'>Submit Cancellation</button>
+
+              
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>";
+
+
     }
   }
 } else {

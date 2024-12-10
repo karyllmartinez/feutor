@@ -180,13 +180,13 @@ if ($result) {
                   <table style='width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>
   <thead>
     <tr>
-      <td colspan='2' style='background-color: green; color: #ffffff; text-align: center; padding: 15px; font-size: 18px; font-weight: bold;'>Tutor Details</td>
+      <td colspan='2' style='background-color: green; color: #ffffff; text-align: center; padding: 15px; font-size: 18px; font-weight: bold;'>Pending Request Details</td>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td style='padding: 15px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;'>
-        <p style='font-weight: bold; font-size: 16px; color: #333; margin: 0;'>" . $row['tutorFullName'] . "</p>
+        <p style='font-weight: bold; font-size: 16px; color: #333; margin: 0;'>" ."Tutor: " . $row['tutorFullName'] . "</p>
       </td>
     </tr>
     <tr>
@@ -214,6 +214,14 @@ if ($result) {
         <p style='font-size: 14px; color: #333; margin: 0;'>Your Note: <span style='font-weight: bold; color: #28a745;'>" . $row['need'] . "</span></p>
       </td>
     </tr>
+
+<tr>
+     <td style='padding: 10px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;'>
+      <p style='font-size: 14px; color: #333; margin: 0;'>Total Cost: <span style='font-weight: bold; color: #28a745;'>" ."₱" . number_format($row['duration'] * $row['ratePerHour'], 2) . "</span></p>
+      
+      </td>
+    </tr>
+
   </tbody>
 </table>
 

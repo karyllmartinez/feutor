@@ -174,7 +174,7 @@ if ($result) {
             echo "<p class='bio'>" . substr($row['bio'], 0, 155) . (strlen($row['bio']) > 75 ? '...' : '') . "</p>";
             echo "<p class='rate'>₱" . $row['ratePerHour'] . "/hr</p>";
            // echo "<p>Available on " . $row['day_of_week'] . " from " . $row['start_time'] . " to " . $row['end_time'] . "</p>";
-           echo "<button class='btn btn-outline-secondary' data-toggle='modal' data-target='#detailsModal_$tutorID'>View Profile</button>"; // New button above
+           echo "<button class='btn btn-outline-secondary' data-toggle='modal' data-target='#detailsModal_" . $row['tutorID'] . " '>View Profile</button>"; // New button above
             echo "<a href='s-sessionform.php?tutor=" . urlencode($row['firstName'] . " " . $row['lastName']) . "' class='btn btn-outline-success'>Book a Session</a>";
             echo "</div>";
             echo "</div>";
@@ -182,7 +182,7 @@ if ($result) {
 
 
             echo "
-            <div class='modal fade' id='detailsModal_$tutorID' tabindex='-1' role='dialog' aria-hidden='true'>
+            <div class='modal fade' id='detailsModal_" . $row['tutorID'] . "' tabindex='-1' role='dialog' aria-hidden='true'>
                 <div class='modal-dialog modal-dialog-centered' role='document'>
                     <div class='modal-content'>
                         <div class='modal-header'>
@@ -204,6 +204,9 @@ if ($result) {
                 <p style='font-weight: bold; font-size: 18px; margin: 0;'>" . $row['firstName'] . " " . $row['lastName'] . "</p>
             </td>
         </tr>
+
+
+        
         <tr>
             <td style='text-align: center; padding: 10px;'>
                 <p style='font-size: 14px; margin: 0;'><img src='icons/grad.png' style='width: 16px; margin-right: 5px;' />" . $row['degreeProgram'] . " - " . $row['year'] . "</p>
@@ -224,6 +227,9 @@ if ($result) {
                 <p style='font-size: 14px; margin: 0; color: #555; text-align: justify;'>" . $row['bio'] . "</p>
             </td>
         </tr>
+
+
+        
     </tbody>
 </table>
                         </div>
@@ -232,6 +238,8 @@ if ($result) {
             </div>
             ";
         }
+
+     
     } else {
         echo "<p>No tutors found matching your criteria.</p>";
     }

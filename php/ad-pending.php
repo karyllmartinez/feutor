@@ -54,6 +54,105 @@ $result = mysqli_query($conn, $query);
 
 ?>
 
+<style>
+
+    /* Table styling */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+}
+
+.table th, .table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Header Styling */
+.table th {
+    background-color: green;
+    color: white;
+    font-weight: bold;
+}
+
+/* Row hover effect */
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Link styling for G-Drive Link */
+.table a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.table a:hover {
+    text-decoration: underline;
+}
+
+/* Input and select box styling */
+.table input[type="number"],
+.table select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.table input[type="number"]:focus,
+.table select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Ensure buttons have the same width */
+.table .btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    width: 100%; /* Make buttons take up the full available space */
+}
+
+.table td button {
+    width: 48%; /* Make the buttons almost equal in width, with some spacing in between */
+    margin-right: 4%; /* Add some space between the buttons */
+}
+
+.table td button:last-child {
+    margin-right: 0; /* Remove the margin from the last button */
+}
+
+
+.table .btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.table .btn-success:hover {
+    background-color: #218838;
+}
+
+.table .btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.table .btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Center the table when there are no pending tutors */
+.table td[colspan="9"] {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}
+
+</style>
+
 <table class="table">
     <thead>
         <tr>

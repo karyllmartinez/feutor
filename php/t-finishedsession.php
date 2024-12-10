@@ -210,9 +210,6 @@ if ($stmt->error) {
 
 $result = $stmt->get_result();
 
-// Initialize a flag to check if any finished session exists
-$finishedSessionsExist = false;
-
 // Check if the query was successful
 if ($result) {
     // Loop through the result set and display the data
@@ -233,7 +230,8 @@ if ($result) {
             $time = $reviewRow['time'];
              $comment = $reviewRow['comment'];
          }
-  
+    
+
         echo "<div class='col-md-12 mb-3' style = 'margin-left:0px; width:100% !important;'>";
         echo "<div class='card shadow custom-card' style='height: 200px; margin-top: 1%;'>";
         echo "<div class='card-body'>";
@@ -253,6 +251,12 @@ if ($result) {
       if ($reviewExists) {
         echo "<button class='btn btn-outline-custom2' data-toggle='modal' data-target='#detailsModal2_$sessionID'>View Rating</button>";
       }
+     
+      
+
+        
+       
+
         echo "</div>";
         echo "</div>";
         echo "</div>";
@@ -445,19 +449,10 @@ if ($result) {
       </div>
     </div>
 ";
-        // Set the flag to true, as we found a finished session
-        $finishedSessionsExist = true;
-    }
-    
-    // If no finished sessions were found
-    if (!$finishedSessionsExist) {
-        echo "<p>No finished sessions yet.</p>";
     }
 } else {
     echo "Error: " . mysqli_error($conn);
 }
-
-
 
 // Close connection
 mysqli_close($conn);

@@ -87,7 +87,7 @@ $profilePicture = !empty($tutorData['profilePicture']) ? $tutorData['profilePict
 
             <!-- Dropdown menu -->
             <ul id="dropdownMenu"
-              style="display: none; position: absolute; top: 50px; right: 0; background-color: #fff; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); border-radius: 4px; list-style-type: none; padding: 10px; min-width: 150px;">
+              style="display: none; position: absolute; top: 50px; right: 0; background-color: #fff; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); border-radius: 4px; list-style-type: none; padding: 10px; min-width: 150px;  z-index: 9999;">
               <li style="margin-bottom: 5px;">
                 <strong><?php echo $tutor_firstname; ?></strong>
               </li>
@@ -152,5 +152,4 @@ $profilePicture = !empty($tutorData['profilePicture']) ? $tutorData['profilePict
 
 </body>
 </html>
-
 

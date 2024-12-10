@@ -117,14 +117,14 @@ echo "<style type='text/css'>
 
 // Retrieve logged-in tutor's tutorID
 $tutorID = $_SESSION['auth_tutor']['tutor_id'];
-// Query to fetch sessions for the logged-in tutor with student names, ordered by nearest session date
 $sql = "SELECT s.sessionID, 
                 DATE_FORMAT(s.sessionDate, '%M %e, %Y') AS formattedSessionDate, 
                 TIME_FORMAT(s.startTime, '%h:%i %p') AS formattedStartTime, 
                 TIME_FORMAT(s.endTime, '%h:%i %p') AS formattedEndTime, 
-                s.duration, s.subject, s.teachingMode, s.need, s.paymentStatus, 
+                s.duration, s.subject, s.teachingMode, s.need, s.paymentStatus, s.remarks,
                 CASE
-                    WHEN s.status = 'Cancelled' THEN 'Cancelled by Student'
+                    WHEN s.status = 'Cancelled' OR s.status = 'Cancelled by Student' THEN 'Cancelled by Student'
+                    WHEN s.status = 'Cancelled by Tutor' THEN 'Cancelled by You'
                     ELSE s.status
                 END AS status,
                 CONCAT(st.firstname, ' ', st.lastname) AS studentFullName, 
@@ -132,8 +132,13 @@ $sql = "SELECT s.sessionID,
         FROM session s
         INNER JOIN student st ON s.studentID = st.studentID
         INNER JOIN tutor t ON s.tutorID = t.tutorID
-        WHERE s.tutorID = ? AND (s.status = 'Cancelled' OR s.status = 'Declined')
+        WHERE s.tutorID = ? 
+          AND (s.status = 'Cancelled' 
+               OR s.status = 'Declined' 
+               OR s.status = 'Cancelled by Student' 
+               OR s.status = 'Cancelled by Tutor')
         ORDER BY s.sessionDate ASC";
+
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $tutorID);
@@ -240,6 +245,22 @@ echo "
         <p style='font-weight: bold; font-size: 15px; color: #0F422A; margin: 0;'>Note: <span style='font-weight: bold; color: #28a745;'>" . $row['need'] . "</span></p>
       </td>
     </tr>
+
+";
+
+if ($row['status'] !== 'Declined') {
+  echo "
+  <tr>
+      <td style='padding: 10px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;'>
+          <p style='font-size: 14px; color: red; margin: 0;'>Reason for Cancellation: 
+              <span style='font-weight: bold; color: #28a745;'>" . htmlspecialchars($row['remarks']) . "</span>
+          </p>
+      </td>
+  </tr>
+  ";
+}
+
+echo "
   </tbody>
 </table>
 

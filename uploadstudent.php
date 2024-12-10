@@ -65,7 +65,7 @@ include('php/ad-auth.php');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutor Earnings</title>
+    <title>Upload Students</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/admin.css">
 
@@ -244,6 +244,9 @@ button.btn-secondary:hover {
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <a class="nav-link" href="tutorearnings.php">Tutor Earnings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="studentrefunds.php">Student Refunds</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="tutormanagement.php">Tutor Management</a>

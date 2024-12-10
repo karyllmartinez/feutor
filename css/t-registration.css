@@ -1,175 +1,198 @@
-body {
-    font-family: Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
     margin: 0;
     padding: 0;
-    display: flex;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
-
-/* BACKGROUND TO SA LEFT SIDE AH */
-.background-message {
-    background-image: url('../img/logo1.png');
-    background-size: cover;
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-    width: 45%;
-    height: 112vh;
+body {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: 'Helvetica World', sans-serif; 
+    min-height: 100vh;
+    background: url('../icons/bg.jpg') no-repeat center center;
+    background-size: cover;
+    position: relative;
+    z-index: 0;
 }
 
-
-/* REG FORM PART (RIGHT SIDE) */
-.message-container {
-    position: fixed;
-    top: 130px; /* Adjust as needed */
-    left:992px; /* Adjust as needed */
-    z-index: 1000; /* Ensure it's above other content */
-    width: 670px;
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(2, 101, 2, 0.7);
+    z-index: -1;
 }
 
-.card {
-    background-color: transparent; 
-}
-
-.card-header {
-    color: white;
-    font-weight: bolder;
-    text-align:center;
-}
-.card-header h1{
-    font-weight: bold;
-}
-.body-reg{
-    margin-top:92px;
-    
-}
-.registration-form {
-    width: 80%; 
+/* Box Styling */
+.box {
+    position: relative;
+    width: 70%;
+    max-width: 900px;
+    max-height: 80vh;
+    background: #222;
     padding: 20px;
-    background-color: #2D7A41; 
-}
-
-.select2-container {
-    width: 60% !important; /* Ensure it matches the width of other fields */
-    margin-left: 250px;
-}
-
-/* Adjust padding for multi-select dropdown */
-.select2-selection--multiple {
-    padding: 10px;
-    border-radius: 20px !important;
-    background-color: #ffffff;
-    border: 1px solid #6098d8 !important;
-}
-
-.select2-container--default .select2-dropdown {
-    left: -250px !important; /* Align to the left */
-}
-
-.registration-form label {
-    font-weight: bold;
-    color: white;
-    margin-left: 250px;
-}
-.registration-form input[type="text"],
-.registration-form input[type="email"],
-.registration-form input[type="password"],
-.registration-form select {
-    border-radius: 20px; 
-    padding: 8px 12px; 
-    margin-bottom: 10px; 
-    width: 60%; /* Adjust the width as needed */
-    box-sizing: border-box; 
-    margin-left: 250px;
-}
-.sign-up-buttons {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     display: flex;
+    flex-direction: column;
+    gap: 20px;
     align-items: center;
-}
-.nope{
-   margin-left:255px;
-   margin-right:-240px;
-   text-decoration: underline;
-   color: #F4CC1D;
-   font-weight: bold;
-   margin-bottom: -50px;
-}
-.nope:hover{
-    color: white;
- }
- .text-center{
-    color: #FFDE00;
-    font-weight: bold;
+    overflow-y: auto;
+    z-index: 2;
+    border: 5px solid transparent; /* Transparent border to apply the image gradient */
+    border-image: linear-gradient(90deg, #e2a705 30%, #ffffff 30%, #ffffff 70%, #e2a705 70%);
+    border-image-slice: 1;
+    animation: borderAnimation 3s linear infinite; /* Adjusted speed */
 }
 
-
-
-/* BUTTON LANG */
-
-.btn-primary {
-    background-color: #F4CC1D;
-    border-color: #28a745;
-    border-radius: 20px;
-    padding: 10px 125px;
-    color: green;
-    margin-left: 400px;
-    margin-top:20px;
-    border-color: #2D7A41;
-    margin-bottom: -31px;
+@keyframes borderAnimation {
+    0% {
+        border-image: linear-gradient(90deg, #e2a705 30%, #ffffff 30%, #ffffff 70%, #e2a705 70%);
+        border-image-slice: 1;
+    }
+    25% {
+        border-image: linear-gradient(180deg, #ffffff 30%, #e2a705 30%, #e2a705 70%, #ffffff 70%);
+        border-image-slice: 1;
+    }
+    50% {
+        border-image: linear-gradient(270deg, #e2a705 30%, #ffffff 30%, #ffffff 70%, #e2a705 70%);
+        border-image-slice: 1;
+    }
+    75% {
+        border-image: linear-gradient(360deg, #ffffff 30%, #e2a705 30%, #e2a705 70%, #ffffff 70%);
+        border-image-slice: 1;
+    }
+    100% {
+        border-image: linear-gradient(90deg, #e2a705 30%, #ffffff 30%, #ffffff 70%, #e2a705 70%);
+        border-image-slice: 1;
+    }
 }
 
-.btn-primary:hover {
-    background-color: #87892e;
-    border-color: #1e7e34;
+.box::before, .box::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 380px;
+    height: 420px;
+    background: linear-gradient(0deg, transparent, transparent, #e2a705, #e2a705, #e2a705);
+    z-index: 1;
+    transform-origin: bottom right;
+    animation: borderAnimation 6s linear infinite;
 }
 
-/* BUTTON LANG LEFT SIDEEEEEEEEEEE*/
+.box::before {
+    animation-delay: -1.5s;
+}
 
-.btn-primary1 {
-    background-color: rgba(255, 255, 255, 0.3); 
-    border-color: #2C7A3F;
-    color: green;
-    margin-top: 750px;
-    border-radius: 20px;
-    padding: 20px 100px;
-    border-width: 3px;
-    margin-left: 10px;
+.box::after {
+    animation-delay: -3s;
+}
+
+.inputBox label {
+    color: white !important;
+}
+
+h2 {
+    text-align: center;
+    color: #ffffff;
     margin-bottom: 20px;
 }
 
-.btn-primary1:hover {
-    background-color: #ffffff;
-    border-color: #1e7e34;
+.inputBox {
+    margin-bottom: 20px;
 }
 
-label a{
-        color: #4A9AF6; /* Change this to your preferred color */
-        text-decoration: underline; /* Ensures the link is underlined */
+.inputBox label {
+    display: block;
+    color: #555;
+    margin-bottom: 5px;
+    font-weight: 500;
 }
 
+.inputBox input,
+.inputBox select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #333;
+    background: #f9f9f9;
+}
 
-/* Terms*/
-
-#termsModal .modal-title,
-#termsModal h6 {
-    font-weight: bold;
+.inputBox input:focus,
+.inputBox select:focus {
+    border-color: #028502;
+    outline: none;
+    background: #fff;
 }
 
 .checkbox-container {
     display: flex;
     align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .checkbox-container input[type="checkbox"] {
-    margin-left: 270px; /* Push the checkbox to the far right */
+    margin: 0;
+    width: auto;
+    height: auto;
 }
 
 .checkbox-container label {
-    margin-bottom: 0; /* Remove bottom margin from label */
-    margin: 5px;
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+
+.sign-up-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button.regbtn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    background-color: #028502;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button.regbtn:hover {
+    background-color: #026a02;
+}
+
+
+
+/* Scrollbar customization */
+::-webkit-scrollbar {
+    width: 10px; /* Adjust the width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888; /* Grey color for the thumb */
+    border-radius: 10px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #666; /* Darker grey when hovered */
+}
+
+::-webkit-scrollbar-track {
+    background: #222; /* Dark background for the track to cater to the dark theme */
+    border-radius: 10px; /* Rounded corners */
 }

@@ -1,188 +1,290 @@
+<?php
+session_start();
+
+include('connection/dbconfig.php');
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require './PHPMailer/src/Exception.php';
+require './PHPMailer/src/PHPMailer.php';
+require './PHPMailer/src/SMTP.php';
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FEUTOR - Welcome</title>
+    <title>Login System in PHP MySQL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
-        html,
-        body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+
+    /* Background image */
+    background: url('icons/bg.jpg') no-repeat center center;
+    background-size: cover;
+
+    /* Green overlay */
+    position: relative;
+    z-index: 0;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(2, 101, 2, 0.698); /* Green overlay with low transparency */
+    z-index: -1;
+
+}
+
+.box {
+    position: relative;
+    width: 500px;
+    height: 550px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.box::before{
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 380px;
+    height: 420px;
+    background: linear-gradient(0deg, transparent, transparent, #e2a705, #e2a705, #e2a705);
+    z-index: 1;
+    transform-origin: bottom right;
+    animation: animate 6s linear infinite;
+}
+
+.box::after{
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 380px;
+    height: 420px;
+    background: linear-gradient(0deg, transparent, transparent,#e2a705, #e2a705, #e2a705);
+    z-index: 1;
+    transform-origin: bottom right;
+    animation: animate 6s linear infinite;
+    animation-delay: -3s;
+}
+
+.borderLine::before{
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 380px;
+    height: 420px;
+    background: linear-gradient(0deg, transparent, transparent, #e2a705, #e2a705, #e2a705);
+    z-index: 1;
+    transform-origin: bottom right;
+    animation: animate 6s linear infinite;
+    animation-delay: -1.5s;
+}
+
+.borderLine::after
+{
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 380px;
+    height: 420px;
+    background: linear-gradient(0deg, transparent, transparent,#e2a705, #e2a705, #e2a705);
+    z-index: 1;
+    transform-origin: bottom right;
+    animation: animate 6s linear infinite;
+    animation-delay: -4.5s;
+}
+
+@keyframes animate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.box form{
+    position: absolute;
+    inset: 4px;
+    background: #222;
+    padding: 50px 40px;
+    border-radius: 8px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.box form h2{
+    color: #fac614;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 0.1em;
+    margin-top:-10px;
+}
+.box form p{
+    color: #fff;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 0.1em;
+    margin-top: px;
+}
 
 
-        .container {
-            width: 750px;
-            height: 750px;
-            padding: 20px;
-            background-color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+.box form .inputBox{
+    position: relative;
+    width: 300px;
+    margin-top: 35px;
+}
 
-        h1 {
-            color: #007bff;
-        }
+.box form .inputBox input{
+    position: relative;
+    width: 100%;
+    padding: 20px 10px 10px;
+    background: transparent;
+    outline: none;
+    border: none;
+    box-shadow: none;
+    color: #23242a;
+    font-size: 1em;
+    letter-spacing: 0.05em;
+    transition: 0.5s;
+    z-index: 10;
+}
 
-        h2 {
-            color: #2d7a41;
-            font-size: 70px;
-        }
+.box form .inputBox span{
+    position: absolute;
+    left: 0;
+    padding: 20px 0px 10px;
+    pointer-events: none;
+    color: #8f8f8f;
+    font-size: 1em;
+    letter-spacing: 0.05em;
+    transition: 0.5s;
+}
 
-        .role-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
+.box form .inputBox input:valid ~ span,
+.box form .inputBox input:focus ~ span {
+    color: #fff;
+    font-size: 0.75em;
+    transform: translateY((-34px));
+}
 
-        .role-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #2d7a41;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+.box form .inputBox i{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: 0.5s;
+    pointer-events: none;
+}
 
-        .role-button:hover {
-            background-color: #0056b3;
-        }
+.box form .inputBox input:valid ~ i,
+.box form .inputBox input:focus ~ i {
+    height: 44px;
+}
+
+.box form .links{
+    display: flex;
+    justify-content: space-between;
+}
+
+.box form .links a{
+    margin: 10px 0;
+    font-size: 0.75em;
+    color: #8f8f8f;
+    text-decoration: none;
+}
+
+.box form .links a:hover,
+.box form .links a:nth-child(2){
+    color: #fff;
+}
+
+.role-button {
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 4px;
+    font-weight: 600;
+    background-color: #e2a705;
+    margin-top: 10px;
+}
+
+.role-button:active {
+    opacity: 0.8;
+}
+
     </style>
-    <script>
+
+<script>
         function redirect(role) {
             if (role === "student") {
                 window.location.href = "s-login.php";
             } else if (role === "student-tutor") {
-                window.location.href = "t-registration.php";
+                window.location.href = "t-login.php";
+            } else if (role === "admin") {
+                window.location.href = "ad-login.php"; // PABAGO SA ADMIN!
             }
         }
     </script>
 </head>
 
 <body>
-    <!-- <div class="container">
-        <h1>FEUTOR</h1>
-        <h2>WELCOME!</h2>
-        <p>FEUTOR is a tutor booking website for FEU Roosevelt students.</p>
-        <div class="role-buttons">
-            <button class="role-button" onclick="redirect('student')">Student</button>
-            <button class="role-button" onclick="redirect('student-tutor')">Student-Tutor</button>
+<div class="box">
+        <span class="borderLine"></span>
+        <form action="s-login.php" method="POST" class="body-reg">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="icons/feutor-land.png" alt="FEUTOR Logo" style="width: 100px; height: auto;">
         </div>
-    </div> -->
-
-    <table style="width: 100%; height: 100%; margin:0; display:flex;  ">
-        <tbody style="width: 100%; height: 100%; display: flex; margin:0;">
-            <tr style="width: 100%; height: 100%; background: linear-gradient(to top, #a6a6a6, white); margin:0;  display: flex; justify-content: center;
-            align-items: center;">
-                <td style="width: 100; height: 100%, margin:0; display: flex; justify-content: center;
-            align-items: center; ">
-                    <img src="icons/feutor-land.png" alt="logo" style="width: 70%; height: auto;  " loading="lazy">
-                </td>
-            </tr>
-            <tr
-                style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: #2d7a41">
-                <td
-                    style="width: 100; height: 100%, margin:0; display: flex; justify-content: center; align-items: center; background-color: #D9D9D9;">
-
-                    <table style="width: 100%; height: 100%; margin:0; display: flex; background-color: #D9D9D9;">
-                        <tbody style="width: 100%; height: 100%; display: flex; margin:0;">
-                            <tr style="width: 100%; height: 100%; display: flex;">
-                                <td style="width: 100%; height: 100%; display: flex;">
-                                    <div class="container">
-
-                                        <h2>WELCOME!</h2>
-                                        <p style="font-size: 20px; font-weight: bold;">FEUTOR is a tutor booking website
+            <h2>WELCOME!</h2>
+            <p>FEUTOR is a tutor booking website
                                             for FEU Roosevelt College students.</p>
-                                        <div style="height: 100px;"></div>
-                                        <p style="font-size: 20px; font-weight: bold;">SELECT YOUR ROLE:</p>
-                                        <div style="height: 70px;"></div>
-                                        <div>
-                                            <table style="width: 100%; height: 100%; margin:0; display:flex;  ">
-                                                <tbody style="width: 100%; height: 100%; display: flex; margin:0;">
-                                                    <tr style="width: 100%; height: 100%; margin:0; display: flex;  justify-content: center; align-items: center; ">
-                                                        <td style="width: 100; height: 100%, margin:0; display: flex; justify-content: center; align-items: center; ">
-                                                            <table>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <img src="icons/1.png" alt="logo" style="width: 40%; height: auto;" loading="lazy">
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                        <div style="height: 10px;"></div>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                        <button class="role-button" onclick="redirect('student')">Student</button>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        
-                                                        </td>
-                                                        
-                                                    </tr>
-                                                    
-                                                    <tr style="width: 100%; height: 100%; margin:0;  display: flex; justify-content: center; align-items: center; ">
-                                                        <td style="width: 100; height: 100%, margin:0; display: flex; justify-content: center; align-items: center; ">
+            <p style="font-size: 20px; font-weight: bold; margin-bottom: -1px; margin-top: 10px">SELECT YOUR ROLE:</p>
 
-                                                        <table>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <img src="icons/2.png" alt="logo" style="width: 40%; height: auto;  " loading="lazy">
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                        <div style="height: 10px;"></div>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                        <button class="role-button" onclick="redirect('student-tutor')">Student-Tutor</button>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                            
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-
-
-
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-
+            <button class="role-button" type="button" onclick="redirect('student')">Student</button>
+            <button class="role-button" type="button" onclick="redirect('student-tutor')">Student-Tutor</button>
+            <button class="role-button" type="button" onclick="redirect('admin')">Admin</button>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

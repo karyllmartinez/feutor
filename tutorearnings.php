@@ -84,6 +84,9 @@ include('php/ad-auth.php');
                 <a class="nav-link active" href="tutorearnings.php">Tutor Earnings</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="studentrefunds.php">Student Refunds</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="tutormanagement.php">Tutor Management</a>
             </li>
             <li class="nav-item">

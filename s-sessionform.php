@@ -362,26 +362,22 @@ include('php/tutorname.php'); // Include your database connection file
       const endTime = document.getElementById('endTime').value;
       const need = document.getElementById('need').value;
 
-      // Check if all fields have values (not just undefined or empty strings)
+      
       if (subjectExpertise.trim() && sessionDate && startTime && endTime && need.trim()) {
-        document.getElementById('modalButton').disabled = false;  // Enable button if all fields are filled
+        document.getElementById('modalButton').disabled = false;  
       } else {
-        document.getElementById('modalButton').disabled = true;  // Disable button if any field is empty
+        document.getElementById('modalButton').disabled = true;  
       }
     }
 
-    // Attach event listeners to input fields to check validation on input
+   
     document.addEventListener('DOMContentLoaded', function () {
       const subjectExpertiseInput = document.getElementById('subjectExpertise');
       const sessionDateInput = document.getElementById('sessionDate');
       const startTimeInput = document.getElementById('startTime');
       const endTimeInput = document.getElementById('endTime');
       const needInput = document.getElementById('need');
-
-      // Initially disable the button
       document.getElementById('modalButton').disabled = true;
-
-      // Add event listeners to trigger form validation when inputs change
       subjectExpertiseInput.addEventListener('input', validateForm);
       sessionDateInput.addEventListener('input', validateForm);
       startTimeInput.addEventListener('input', validateForm);
@@ -391,11 +387,11 @@ include('php/tutorname.php'); // Include your database connection file
   </script>
 
   <script>
-    // Wait until the DOM is fully loaded
+    
     document.addEventListener('DOMContentLoaded', function () {
-      // Attach event listener to the button inside the modal
+     
       document.getElementById('finalSubmitButton').addEventListener('click', function () {
-        // Submit the form programmatically
+        
         document.getElementById('sessionForm').submit();
       });
     });

@@ -1,27 +1,25 @@
 <?php
-session_start();
+  session_start();
 
-include('php/t-auth.php');
-include('connection/dbconfig.php'); // Include your database connection file
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+  include('php/t-auth.php');
+  include('connection/dbconfig.php'); // Include your database connection file
+  error_reporting(E_ALL);
+  ini_set('display_errors', 1);
 
-$query = "SELECT `tutorID`, `firstName`, `lastName`, `email`, `degreeProgram`, `year`, `gdriveLink`, `approvalStatus`, `created_at`, `profilePicture`, `subjectExpertise`, `teachingMode`, `ratePerHour`, `bio` FROM `tutor` WHERE `tutorID` = ?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $tutorID); // Assuming tutorID is an integer
-$stmt->execute();
-$result = $stmt->get_result();
+  // Fetch the profile picture of the tutor
+  $tutorID = $_SESSION['auth_tutor']['tutor_id'];
+  $query = "SELECT profilePicture FROM tutor WHERE tutorID = ?";
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("i", $tutorID);
+  $stmt->execute();
+  $stmt->bind_result($profilePicture);
+  $stmt->fetch();
+  $stmt->close();
 
-if ($result->num_rows > 0) {
-  // Fetch data
-  $tutorData = $result->fetch_assoc();
-} else {
-  $message = "No data found for the tutor.";
-}
+  // Check if profile picture exists and if not, use a default image
+  $profilePicture = !empty($profilePicture) ? $profilePicture : 'icons/default.png';
 
-$profilePicture = !empty($tutorData['profilePicture']) ? $tutorData['profilePicture'] : 'icons/default.png';
-
-// Fetch notifications for the tutor
+  // Fetch notifications for the tutor
 $notificationQuery = "SELECT notificationID, message, created_at, status FROM notifications WHERE tutorID = ? ORDER BY created_at DESC";
 $notificationStmt = $conn->prepare($notificationQuery);
 $notificationStmt->bind_param("i", $tutorID);
@@ -30,12 +28,12 @@ $notificationStmt->bind_result($notificationID, $message, $created_at, $status);
 $notifications = [];
 
 while ($notificationStmt->fetch()) {
-  $notifications[] = [
-    'notificationID' => $notificationID,
-    'message' => $message,
-    'created_at' => $created_at,
-    'status' => $status  // Include status here
-  ];
+    $notifications[] = [
+        'notificationID' => $notificationID,
+        'message' => $message,
+        'created_at' => $created_at,
+        'status' => $status  // Include status here
+    ];
 }
 
 
@@ -49,14 +47,14 @@ $unreadStmt->fetch();
 $unreadStmt->close();
 
 
-// Get the count of notifications
-$notificationCount = count($notifications);
+  // Get the count of notifications
+  $notificationCount = count($notifications);
 
-$notificationStmt->close();
+  $notificationStmt->close();
 
 
-
-?>
+  
+  ?>
 
 
 <!DOCTYPE html>
@@ -212,46 +210,56 @@ $notificationStmt->close();
 
 <body>
 
-  <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand-lg navbar-green bg-green">
-    <div class="container">
-      <!-- Brand -->
-      <a class="navbar-brand" href="#">FEUTOR</a>
-      <!-- Toggler Button -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <!-- Navigation Items -->
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="t-dashboard.php">Home</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="appointmentsDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Appointments
-            </a>
-            <div class="dropdown-menu" aria-labelledby="appointmentsDropdown">
-              <a class="dropdown-item" href="t-approved.php">Accepted</a>
-              <a class="dropdown-item" href="t-declined.php">Declined</a>
-              <a class="dropdown-item" href="t-finished.php">Finished</a>
-            </div>
-          </li>
+<nav class="navbar navbar-expand-lg navbar-green bg-green">
+      <div class="container">
+        <!-- Brand -->
+        <a class="navbar-brand" href="#">FEUTOR</a>
+        <!-- Toggler Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navigation Items -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="t-dashboard.php">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="appointmentsDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Appointments
+              </a>
+              <div class="dropdown-menu" aria-labelledby="appointmentsDropdown">
+                <a class="dropdown-item" href="t-approved.php">Accepted</a>
+                <a class="dropdown-item" href="t-declined.php">Declined</a>
+                <a class="dropdown-item" href="t-finished.php">Finished</a>
+              </div>
+            </li>
           
-          <li class="nav-item">
-            <a class="nav-link" href="#">Notifications</a>
-          </li>
-          <li class="nav-item user-dropdown" style="position: relative; display: inline-block;">
-            <!-- Profile Picture and Inverted Triangle as trigger -->
-            <a href="#" id="userDropdown" style="text-decoration: none;" onclick="toggleDropdown(event)">
-              <img src="<?php echo $profilePicture; ?>" alt="Profile Picture"
-                style="width: 40px; height: 40px; border-radius: 50%; margin-right: 5px;">
-              <!-- White Inverted Triangle Indicator -->
-              <span
-                style="border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #fff; display: inline-block; vertical-align: middle;"></span>
-            </a>
+            <li class="nav-item notifications">
+              <a class="nav-link" href="#" id="notificationsLink" onclick="openNotificationsModal()">
+                Notifications
+                <!-- Red Circle for Notification Count -->
+                <!-- Red Circle for Notification Count -->
+                <?php if ($notificationCount > 0): ?>
+                  <span id="notificationCount" class="notification-count" <?php echo ($unreadCount > 0) ? '' : 'style="display: none;"'; ?>>
+  <?php echo $unreadCount; ?>
+</span>
+
+                <?php endif; ?>
+
+              </a>
+            </li>
+            <li class="nav-item user-dropdown" style="position: relative; display: inline-block;">
+              <!-- Profile Picture and Inverted Triangle as trigger -->
+              <a href="#" id="userDropdown" style="text-decoration: none;" onclick="toggleDropdown(event)">
+                <img src="<?php echo $profilePicture; ?>" alt="Profile Picture"
+                  style="width: 40px; height: 40px; border-radius: 50%; margin-right: 5px;">
+                <!-- White Inverted Triangle Indicator -->
+                <span
+                  style="border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #fff; display: inline-block; vertical-align: middle;"></span>
+              </a>
 
             <!-- Dropdown menu -->
             <ul id="dropdownMenu"
