@@ -33,7 +33,7 @@ if(isset($_POST['register_btn']))
     {
         // Email Already Exists
         $_SESSION['message'] = "Email already exists";
-        header("Location: s-registration.php");
+        header("Location: t-registration.php");
         exit(0);
     }
     else

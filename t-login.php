@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
 <head>
     <title>Tutor Login System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/s-login.css">
+    <link rel="stylesheet" href="css/t-login.css">
 </head>
 
 <body>
@@ -91,13 +91,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     <form action="t-login.php" method="POST" class="body-reg">
         <h2>TUTOR SIGN IN</h2>
 
-        <!-- Display error message if available -->
+        
         <?php if (isset($_SESSION['message'])): ?>
-            <div style="color: red; font-size: 0.9em; margin-top: 10px;">
-                <h4 class="alert alert-warning"><?= $_SESSION['message'] ?></h4>
+            <div style="">
+                <h6 class="alert alert-warning"><?= $_SESSION['message'] ?></h6>
             </div>
             <?php unset($_SESSION['message']); ?>
-        <?php endif; ?>
+        <?php endif; ?> 
 
         <div class="inputBox">
             <input type="email" name="email" required>

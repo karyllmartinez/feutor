@@ -21,7 +21,7 @@ include('php/t-restrict.php');
 
 <body>
     <div class="box borderLine">
-        <form action="t-login.php" method="POST" class="body-reg">
+    <form action="t-registercode.php" method="POST" class="body-reg" onsubmit="return validateForm();">
             <h2>STUDENT-TUTOR SIGN UP</h2>
 
             <?php if (isset($_SESSION['message'])): ?>

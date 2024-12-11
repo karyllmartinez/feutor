@@ -173,7 +173,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </td>
 
                 <td class="tutor-email">
-                    <?php echo $_SESSION['temp_tutor']['email']; ?>
+                    <?php echo $_SESSION['email']; ?>
                 </td>
 
                 <td class="form-otp">
